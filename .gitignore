@@ -1,0 +1,19 @@
+# IntelliJ related
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# VSCode
+.vscode/
+
+# Flutter/Dart/Pub related
+.dart_tool/
+.packages
+android/
+ios/
+pubspec.lock
+
+# Directory for build outputs
+build/
+coverage/
