@@ -21,7 +21,6 @@ import 'package:otp_autofill/src/otp_interactor.dart';
 
 /// Custom controller for text views, IOS autofill is built in flutter
 class OTPTextEditController extends TextEditingController {
-
   /// OTP code length - trigger for callback
   final int codeLength;
 
