@@ -1,5 +1,9 @@
 # Changelog
 
+## next
+
+* Refactoring.
+
 ## 1.1.0-dev.1 - 2021-07-08
 
 * Make native Android receivers null after unregister. (minor)
