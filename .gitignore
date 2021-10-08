@@ -1,7 +1,17 @@
-.DS_Store
+# IntelliJ related
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# VSCode
+.vscode/
+
+# Flutter/Dart/Pub related
 .dart_tool/
-
 .packages
-.pub/
+pubspec.lock
 
+# Directory for build outputs
 build/
+coverage/
