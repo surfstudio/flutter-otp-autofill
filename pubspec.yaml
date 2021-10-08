@@ -25,3 +25,7 @@ flutter:
         pluginClass: OTPPlugin
       ios:
         pluginClass: OTPPlugin
+
+dependency_validator:
+  exclude:
+    - "example/**"
