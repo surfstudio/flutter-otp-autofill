@@ -19,22 +19,21 @@ import 'package:flutter/material.dart';
 import 'package:otp_autofill/src/base/strategy.dart';
 import 'package:otp_autofill/src/otp_interactor.dart';
 
-/// Custom controller for text views, IOS autofill is built in flutter
+/// Custom controller for text views, IOS autofill is built in flutter.
 class OTPTextEditController extends TextEditingController {
-
-  /// OTP code length - trigger for callback
+  /// OTP code length - trigger for callback.
   final int codeLength;
 
-  /// [OTPTextEditController]'s receive OTP code callback
+  /// [OTPTextEditController]'s receive OTP code callback.
   final StringCallback? onCodeReceive;
 
-  /// Receiver gets TimeoutError after 5 minutes without sms
+  /// Receiver gets TimeoutError after 5 minutes without sms.
   final VoidCallback? onTimeOutException;
 
-  /// Stop listening after receiving or error an OTP code
+  /// Stop listening after receiving or error an OTP code.
   final bool autoStop;
 
-  /// interaction with OTP
+  /// Interaction with OTP.
   final _otpInteractor = OTPInteractor();
 
   OTPTextEditController({
@@ -48,7 +47,7 @@ class OTPTextEditController extends TextEditingController {
 
   /// Start listen for OTP code with User Consent API
   /// sms by default
-  /// could be added another input as [OTPStrategy]
+  /// could be added another input as [OTPStrategy].
   void startListenUserConsent(
     ExtractStringCallback codeExtractor, {
     List<OTPStrategy>? strategies,
@@ -76,7 +75,7 @@ class OTPTextEditController extends TextEditingController {
 
   /// Start listen for OTP code with Retriever API
   /// sms by default
-  /// could be added another input as [OTPStrategy]
+  /// could be added another input as [OTPStrategy].
   void startListenRetriever(
     ExtractStringCallback codeExtractor, {
     List<OTPStrategy>? additionalStrategies,
@@ -104,7 +103,7 @@ class OTPTextEditController extends TextEditingController {
   }
 
   /// Get OTP code from another input
-  /// don't register any BroadcastReceivers
+  /// don't register any BroadcastReceivers.
   void startListenOnlyStrategies(
     List<OTPStrategy>? strategies,
     ExtractStringCallback codeExtractor,
@@ -117,12 +116,12 @@ class OTPTextEditController extends TextEditingController {
     });
   }
 
-  /// Broadcast receiver stop listen for OTP code, use in dispose
+  /// Broadcast receiver stop listen for OTP code, use in dispose.
   Future<Object?> stopListen() {
     return _otpInteractor.stopListenForCode();
   }
 
-  /// call onComplete callback if code entered
+  /// Call onComplete callback if code entered.
   void checkForComplete() {
     if (text.length == codeLength) onCodeReceive?.call(text);
   }
