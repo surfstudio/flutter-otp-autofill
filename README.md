@@ -1,7 +1,7 @@
 # OTP autofill
 
-[![Build Status](https://shields.io/github/workflow/status/surfstudio/SurfGear/build?logo=github&logoColor=white)](https://github.com/surfstudio/SurfGear/tree/main/packages/otp_autofill)
-[![Coverage Status](https://img.shields.io/codecov/c/github/surfstudio/SurfGear?flag=otp_autofill&logo=codecov&logoColor=white)](https://codecov.io/gh/surfstudio/SurfGear)
+[![Build Status](https://shields.io/github/workflow/status/surfstudio/SurfGear/build?logo=github&logoColor=white)](https://github.com/surfstudio/flutter-otp-autofill)
+[![Coverage Status](https://img.shields.io/codecov/c/github/surfstudio/SurfGear?flag=otp_autofill&logo=codecov&logoColor=white)](https://app.codecov.io/gh/surfstudio/flutter-otp-autofill)
 [![Pub Version](https://img.shields.io/pub/v/otp_autofill?logo=dart&logoColor=white)](https://pub.dev/packages/otp_autofill)
 [![Pub Likes](https://badgen.net/pub/likes/otp_autofill)](https://pub.dev/packages/otp_autofill)
 [![Pub popularity](https://badgen.net/pub/popularity/otp_autofill)](https://pub.dev/packages/otp_autofill/score)
@@ -25,7 +25,7 @@ Code from sms stores for 3 minutes.
 ### Rules for sms
 
 1. Sms must contain the word `code` or it translation to ios supported localizations.
-1. Must be only one digit sequence in sms.
+2. Must be only one digit sequence in sms.
 
 ### iOS Testing
 
@@ -51,9 +51,9 @@ If you use [SMS User Consent API](https://developers.google.com/identity/sms-ret
 
 ### Rules for sms. SMS Retriever API
 
-1. Be no longer than 140 bytes
-1. Contain a one-time code that the client sends back to your server to complete the verification flow
-1. Include an 11-character hash string that identifies your app ([documentation for server](https://developers.google.com/identity/sms-retriever/verify#computing_your_apps_hash_string), for testing you can get in from `OTPInteractor.getAppSignature`)
+1. Be no longer than 140 bytes.
+2. Contain a one-time code that the client sends back to your server to complete the verification flow.
+3. Include an 11-character hash string that identifies your app ([documentation for server](https://developers.google.com/identity/sms-retriever/verify#computing_your_apps_hash_string), for testing you can get in from `OTPInteractor.getAppSignature`).
 
 ### Android Testing
 
@@ -65,8 +65,8 @@ You could user `OTPInteractor` to interact with OTP.
 
 For easy implementation you could use `OTPTextEditController` as a controller to your `TextField`.
 
-`OTPTextEditController.startListenUserConsent` - use [SMS User Consent API](user_consent_link), and custom strategies.
-`OTPTextEditController.startListenRetriever` - use [SMS Retriever API](retriever_link), and custom strategies.
+`OTPTextEditController.startListenUserConsent` - use [SMS User Consent API](https://developers.google.com/identity/sms-retriever/user-consent/overview), and custom strategies.
+`OTPTextEditController.startListenRetriever` - use [SMS Retriever API](https://developers.google.com/identity/sms-retriever/overview), and custom strategies.
 `OTPTextEditController.startListenOnlyStrategies` - listen only custom strategies.
 `OTPTextEditController.stopListen` - use in dispose.
 
@@ -76,7 +76,7 @@ Add `otp_autofill` to your `pubspec.yaml` file:
 
 ```yaml
 dependencies:
-  otp_autofill: ^1.0.0
+  otp_autofill: ^1.1.0
 ```
 
 You can use both `stable` and `dev` versions of the package listed above in the badges bar.
@@ -103,11 +103,11 @@ All notable changes to this project will be documented in [this file](./CHANGELO
 
 ## Issues
 
-For issues, file directly in the Issues section.
+For issues, file directly in the [Issues](https://github.com/surfstudio/flutter-otp-autofill/issues) section.
 
 ## Contribute
 
-If you would like to contribute to the package (e.g. by improving the documentation, solving a bug or adding a cool new feature), please review our [contribution guide](../../CONTRIBUTING.md) first and send us your pull request.
+If you would like to contribute to the package (e.g. by improving the documentation, solving a bug or adding a cool new feature), please review our [contribution guide](./CONTRIBUTING.md) first and send us your pull request.
 
 Your PRs are always welcome.
 

@@ -1,8 +1,8 @@
 name: otp_autofill
 version: 1.1.0-dev.1
 description: Android implementation of OTP autofill with using User Consent API and Retriever API. Add possibility to receive OTP code from another input.
-repository: "https://github.com/surfstudio/SurfGear/tree/main/packages/otp_autofill"
-issue_tracker: "https://github.com/surfstudio/SurfGear/issues"
+repository: "https://github.com/surfstudio/flutter-otp-autofill"
+issue_tracker: "https://github.com/surfstudio/flutter-otp-autofill/issues"
 
 dependencies:
   flutter:
@@ -25,15 +25,3 @@ flutter:
         pluginClass: OTPPlugin
       ios:
         pluginClass: OTPPlugin
-
-custom:
-  is_stable: false
-  unstable_version:
-  is_plugin: true
-  path: otp_autofill
-  separate_repo_url:
-  hostUrl:
-
-dependency_validator:
-  exclude:
-    - "example/**"
