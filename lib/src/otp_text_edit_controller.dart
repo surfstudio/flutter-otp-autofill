@@ -19,6 +19,8 @@ import 'package:flutter/material.dart';
 import 'package:otp_autofill/src/base/strategy.dart';
 import 'package:otp_autofill/src/otp_interactor.dart';
 
+final _defaultOTPInteractor = OTPInteractor();
+
 /// Custom controller for text views, IOS autofill is built in flutter.
 class OTPTextEditController extends TextEditingController {
   /// OTP code length - trigger for callback.
@@ -34,14 +36,15 @@ class OTPTextEditController extends TextEditingController {
   final bool autoStop;
 
   /// Interaction with OTP.
-  final _otpInteractor = OTPInteractor();
+  final OTPInteractor _otpInteractor;
 
   OTPTextEditController({
     required this.codeLength,
     this.onCodeReceive,
     this.onTimeOutException,
     this.autoStop = true,
-  }) {
+    OTPInteractor? otpInteractor,
+  }) : _otpInteractor = otpInteractor?? _defaultOTPInteractor {
     addListener(checkForComplete);
   }
 

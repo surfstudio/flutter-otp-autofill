@@ -19,15 +19,20 @@ import 'package:otp_autofill/src/otp_text_edit_controller.dart';
 const testCode = '54321';
 
 class SampleStrategy extends OTPStrategy {
+  final String? code;
+
+  SampleStrategy({this.code});
+
   @override
   Future<String> listenForCode() {
     return Future.delayed(
       const Duration(milliseconds: 250),
-      () => 'Your code is $testCode',
+      () => 'Your code is ${code ?? testCode}',
     );
   }
 }
 
+@TestOn('vm && android')
 void main() {
   // This code binds the [TestWidgetsFlutterBinding]
   // to a [LiveTestWidgetsFlutterBinding],
@@ -46,12 +51,28 @@ void main() {
       });
   });
 
-  testWidgets('OTPTextEditController startListenOnlyStrategies',
-      (tester) async {
-    expect(controller.text, isEmpty);
+  testWidgets(
+    'OTPTextEditController startListenOnlyStrategies',
+    (tester) async {
+      expect(controller.text, isEmpty);
 
-    await tester.pump(const Duration(milliseconds: 500));
+      await tester.pump(const Duration(milliseconds: 500));
 
-    expect(controller.text, equals(testCode));
-  });
+      expect(controller.text, equals(testCode));
+    },
+  );
+
+  test(
+    'When call stopListen active subscriptions should be removed from the controller',
+    () async {
+      expect(controller.text, isEmpty);
+
+      await Future<void>.delayed(Duration(seconds: 1));
+
+      expect(controller.text, equals(testCode));
+
+      await controller.stopListen();
+    },
+    //testOn: 'android',
+  );
 }
