@@ -1,5 +1,5 @@
 exclude:
-- "example/**"
+  - "example/**"
 
 ignore:
-- analyzer
+  - analyzer
