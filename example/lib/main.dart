@@ -39,7 +39,8 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     _otpInteractor = OTPInteractor();
-    _otpInteractor.getAppSignature()
+    _otpInteractor
+        .getAppSignature()
         //ignore: avoid_print
         .then((value) => print('signature - $value'));
 

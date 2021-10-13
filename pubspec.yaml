@@ -7,11 +7,12 @@ issue_tracker: "https://github.com/surfstudio/flutter-otp-autofill/issues"
 dependencies:
   flutter:
     sdk: flutter
-  mocktail: ^0.2.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+  mocktail: ^0.2.0
   surf_lint_rules: ^1.0.0
 
 environment:
@@ -26,7 +27,3 @@ flutter:
         pluginClass: OTPPlugin
       ios:
         pluginClass: OTPPlugin
-
-dependency_validator:
-  exclude:
-    - "example/**"
