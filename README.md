@@ -9,7 +9,7 @@
 
 This package is part of the [SurfGear](https://github.com/surfstudio/SurfGear) toolkit made by [Surf](https://surf.ru).
 
-## About
+## Description
 
 This plugin uses [SMS User Consent API](https://developers.google.com/identity/sms-retriever/user-consent/overview) and [SMS Retriever API](https://developers.google.com/identity/sms-retriever/overview) on Android.
 
@@ -97,17 +97,59 @@ android {
 }
 ```
 
+## Example
+
+1. Create simple strategy
+
+```dart
+class SampleStrategy extends OTPStrategy {
+  @override
+  Future<String> listenForCode() {
+    return Future.delayed(
+      const Duration(seconds: 4),
+      () => 'Your code is 54321',
+    );
+  }
+}
+```
+
+2. Initialize listener and set
+
+```dart
+late OTPTextEditController controller;
+final scaffoldKey = GlobalKey();
+
+@override
+void initState() {
+  super.initState();
+  OTPInteractor.getAppSignature()
+      .then((value) => print('signature - $value'));
+  controller = OTPTextEditController(
+    codeLength: 5,
+    onCodeReceive: (code) => print('Your Application receive code - $code'),
+  )..startListenUserConsent(
+      (code) {
+        final exp = RegExp(r'(\d{5})');
+        return exp.stringMatch(code ?? '') ?? '';
+      },
+      strategies: [
+        SampleStrategy(),
+      ],
+    );
+}
+```
+
 ## Changelog
 
 All notable changes to this project will be documented in [this file](./CHANGELOG.md).
 
 ## Issues
 
-For issues, file directly in the [Issues](https://github.com/surfstudio/flutter-otp-autofill/issues) section.
+To report your issues, submit them directly in the [Issues](https://github.com/surfstudio/flutter-otp-autofill/issues) section.
 
 ## Contribute
 
-If you would like to contribute to the package (e.g. by improving the documentation, solving a bug or adding a cool new feature), please review our [contribution guide](./CONTRIBUTING.md) first and send us your pull request.
+If you would like to contribute to the package (e.g. by improving the documentation, fixing a bug or adding a cool new feature), please read our [contribution guide](./CONTRIBUTING.md) first and send us your pull request.
 
 Your PRs are always welcome.
 
