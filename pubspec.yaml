@@ -26,14 +26,6 @@ flutter:
       ios:
         pluginClass: OTPPlugin
 
-custom:
-  is_stable: false
-  unstable_version:
-  is_plugin: true
-  path: otp_autofill
-  separate_repo_url:
-  hostUrl:
-
 dependency_validator:
   exclude:
     - "example/**"

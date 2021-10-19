@@ -12,5 +12,5 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/// Plugin doesn't support platform
+/// Plugin doesn't support platform.
 class UnsupportedPlatform implements Exception {}
