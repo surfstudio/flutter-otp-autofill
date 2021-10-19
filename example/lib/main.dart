@@ -33,17 +33,22 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   final scaffoldKey = GlobalKey();
   late OTPTextEditController controller;
+  late OTPInteractor _otpInteractor;
 
   @override
   void initState() {
     super.initState();
-    OTPInteractor.getAppSignature()
+    _otpInteractor = OTPInteractor();
+    _otpInteractor
+        .getAppSignature()
         //ignore: avoid_print
         .then((value) => print('signature - $value'));
+
     controller = OTPTextEditController(
       codeLength: 5,
       //ignore: avoid_print
       onCodeReceive: (code) => print('Your Application receive code - $code'),
+      otpInteractor: _otpInteractor,
     )..startListenUserConsent(
         (code) {
           final exp = RegExp(r'(\d{5})');

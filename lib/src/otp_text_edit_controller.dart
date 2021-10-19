@@ -13,11 +13,13 @@
 // limitations under the License.
 
 import 'dart:async';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:otp_autofill/src/base/strategy.dart';
 import 'package:otp_autofill/src/otp_interactor.dart';
+import 'package:otp_autofill/src/utill/platform_wrapper.dart';
+
+final _defaultOTPInteractor = OTPInteractor();
 
 /// Custom controller for text views, IOS autofill is built in flutter.
 class OTPTextEditController extends TextEditingController {
@@ -34,14 +36,20 @@ class OTPTextEditController extends TextEditingController {
   final bool autoStop;
 
   /// Interaction with OTP.
-  final _otpInteractor = OTPInteractor();
+  final OTPInteractor _otpInteractor;
+
+  /// Wrapper for Platform io.
+  final PlatformWrapper _platform;
 
   OTPTextEditController({
     required this.codeLength,
     this.onCodeReceive,
     this.onTimeOutException,
     this.autoStop = true,
-  }) {
+    OTPInteractor? otpInteractor,
+    PlatformWrapper? platform,
+  })  : _otpInteractor = otpInteractor ?? _defaultOTPInteractor,
+        _platform = platform ?? PlatformWrapper() {
     addListener(checkForComplete);
   }
 
@@ -56,21 +64,27 @@ class OTPTextEditController extends TextEditingController {
     final smsListen = _otpInteractor.startListenUserConsent(senderNumber);
     final strategiesListen = strategies?.map((e) => e.listenForCode());
 
-    Stream.fromFutures([
-      if (Platform.isAndroid) smsListen,
+    final list = [
+      if (_platform.isAndroid) smsListen,
       if (strategiesListen != null) ...strategiesListen,
-    ]).first.then((value) {
-      if (autoStop) {
-        stopListen();
-      }
-      text = codeExtractor(value);
+    ];
+
+    Stream.fromFutures(list).first.then(
+      (value) {
+        if (autoStop) {
+          stopListen();
+        }
+        text = codeExtractor(value);
+      },
+    ).catchError(
       //ignore: avoid_types_on_closure_parameters
-    }).catchError((Object _) {
-      if (autoStop) {
-        stopListen();
-      }
-      onTimeOutException?.call();
-    });
+      (Object e) {
+        if (autoStop) {
+          stopListen();
+        }
+        onTimeOutException?.call();
+      },
+    );
   }
 
   /// Start listen for OTP code with Retriever API
@@ -86,20 +100,24 @@ class OTPTextEditController extends TextEditingController {
     );
 
     Stream.fromFutures([
-      if (Platform.isAndroid) smsListen,
+      if (_platform.isAndroid) smsListen,
       if (strategiesListen != null) ...strategiesListen,
-    ]).first.then((value) {
-      if (autoStop) {
-        stopListen();
-      }
-      text = codeExtractor(value);
+    ]).first.then(
+      (value) {
+        if (autoStop) {
+          stopListen();
+        }
+        text = codeExtractor(value);
+      },
+    ).catchError(
       //ignore: avoid_types_on_closure_parameters
-    }).catchError((Object _) {
-      if (autoStop) {
-        stopListen();
-      }
-      onTimeOutException?.call();
-    });
+      (Object _) {
+        if (autoStop) {
+          stopListen();
+        }
+        onTimeOutException?.call();
+      },
+    );
   }
 
   /// Get OTP code from another input

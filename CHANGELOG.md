@@ -2,6 +2,7 @@
 
 ## next
 
+* Static methods of OTPInteractor have been removed. Improved dependency passing.
 
 ## 1.1.0-dev.1 - 2021-07-08
 
