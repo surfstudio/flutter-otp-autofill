@@ -1,20 +1,20 @@
 # Changelog
 
-## next
+## 2.0.0
 
 * Static methods of OTPInteractor have been removed. Improved dependency passing.
 
-## 1.1.0-dev.1 - 2021-07-08
+## 1.1.0-dev.1
 
 * Make native Android receivers null after unregister. (minor)
 * Add `autoStop` param to `OTPTextEditController`. (minor)
 * Make `OTPTextEditController`'s `onCodeReceive` non-required. (minor)
 
-## 1.0.2 - 2021-05-30
+## 1.0.2
 
 * Stable release
 
-## 1.0.2-dev.1 - 2021-05-25
+## 1.0.2-dev.1
 
 * Apply new lint rules.
 
