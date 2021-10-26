@@ -1,7 +1,7 @@
 # OTP autofill
 
-[![Build Status](https://shields.io/github/workflow/status/surfstudio/SurfGear/build?logo=github&logoColor=white)](https://github.com/surfstudio/flutter-otp-autofill)
-[![Coverage Status](https://img.shields.io/codecov/c/github/surfstudio/SurfGear?flag=otp_autofill&logo=codecov&logoColor=white)](https://app.codecov.io/gh/surfstudio/flutter-otp-autofill)
+[![Build Status](https://shields.io/github/workflow/status/surfstudio/flutter-otp-autofill/build?logo=github&logoColor=white)](https://github.com/surfstudio/flutter-otp-autofill)
+[![Coverage Status](https://img.shields.io/codecov/c/github/surfstudio/flutter-otp-autofill?logo=codecov&logoColor=white)](https://app.codecov.io/gh/surfstudio/flutter-otp-autofill)
 [![Pub Version](https://img.shields.io/pub/v/otp_autofill?logo=dart&logoColor=white)](https://pub.dev/packages/otp_autofill)
 [![Pub Likes](https://badgen.net/pub/likes/otp_autofill)](https://pub.dev/packages/otp_autofill)
 [![Pub popularity](https://badgen.net/pub/popularity/otp_autofill)](https://pub.dev/packages/otp_autofill/score)
