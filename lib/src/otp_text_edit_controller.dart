@@ -15,6 +15,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:otp_autofill/src/base/strategy.dart';
 import 'package:otp_autofill/src/otp_interactor.dart';
 import 'package:otp_autofill/src/utill/platform_wrapper.dart';
@@ -32,24 +33,30 @@ class OTPTextEditController extends TextEditingController {
   /// Receiver gets TimeoutError after 5 minutes without sms.
   final VoidCallback? onTimeOutException;
 
+  /// Error handler.
+  final Function(Exception error)? errorHandler;
+
   /// Stop listening after receiving or error an OTP code.
   final bool autoStop;
 
   /// Interaction with OTP.
-  final OTPInteractor _otpInteractor;
+  @visibleForTesting
+  final OTPInteractor otpInteractor;
 
   /// Wrapper for Platform io.
-  final PlatformWrapper _platform;
+  @visibleForTesting
+  final PlatformWrapper platform;
 
   OTPTextEditController({
     required this.codeLength,
     this.onCodeReceive,
     this.onTimeOutException,
+    this.errorHandler,
     this.autoStop = true,
     OTPInteractor? otpInteractor,
     PlatformWrapper? platform,
-  })  : _otpInteractor = otpInteractor ?? _defaultOTPInteractor,
-        _platform = platform ?? PlatformWrapper() {
+  })  : otpInteractor = otpInteractor ?? _defaultOTPInteractor,
+        platform = platform ?? PlatformWrapper() {
     addListener(checkForComplete);
   }
 
@@ -61,11 +68,11 @@ class OTPTextEditController extends TextEditingController {
     List<OTPStrategy>? strategies,
     String? senderNumber,
   }) {
-    final smsListen = _otpInteractor.startListenUserConsent(senderNumber);
+    final smsListen = otpInteractor.startListenUserConsent(senderNumber);
     final strategiesListen = strategies?.map((e) => e.listenForCode());
 
     final list = [
-      if (_platform.isAndroid) smsListen,
+      if (platform.isAndroid) smsListen,
       if (strategiesListen != null) ...strategiesListen,
     ];
 
@@ -77,12 +84,18 @@ class OTPTextEditController extends TextEditingController {
         text = codeExtractor(value);
       },
     ).catchError(
-      //ignore: avoid_types_on_closure_parameters
-      (Object e) {
+      // ignore: avoid_types_on_closure_parameters
+      (Object error) {
         if (autoStop) {
           stopListen();
         }
-        onTimeOutException?.call();
+        if (error is PlatformException && error.code == '408') {
+          onTimeOutException?.call();
+        } else if (error is Exception) {
+          errorHandler?.call(error);
+        } else {
+          throw Exception('Unexpected error: $error');
+        }
       },
     );
   }
@@ -94,13 +107,13 @@ class OTPTextEditController extends TextEditingController {
     ExtractStringCallback codeExtractor, {
     List<OTPStrategy>? additionalStrategies,
   }) {
-    final smsListen = _otpInteractor.startListenRetriever();
+    final smsListen = otpInteractor.startListenRetriever();
     final strategiesListen = additionalStrategies?.map(
       (e) => e.listenForCode(),
     );
 
     Stream.fromFutures([
-      if (_platform.isAndroid) smsListen,
+      if (platform.isAndroid) smsListen,
       if (strategiesListen != null) ...strategiesListen,
     ]).first.then(
       (value) {
@@ -110,12 +123,18 @@ class OTPTextEditController extends TextEditingController {
         text = codeExtractor(value);
       },
     ).catchError(
-      //ignore: avoid_types_on_closure_parameters
-      (Object _) {
+      // ignore: avoid_types_on_closure_parameters
+      (Object error) {
         if (autoStop) {
           stopListen();
         }
-        onTimeOutException?.call();
+        if (error is PlatformException && error.code == '408') {
+          onTimeOutException?.call();
+        } else if (error is Exception) {
+          errorHandler?.call(error);
+        } else {
+          throw Exception('Unexpected error: $error');
+        }
       },
     );
   }
@@ -136,7 +155,7 @@ class OTPTextEditController extends TextEditingController {
 
   /// Broadcast receiver stop listen for OTP code, use in dispose.
   Future<Object?> stopListen() {
-    return _otpInteractor.stopListenForCode();
+    return otpInteractor.stopListenForCode();
   }
 
   /// Call onComplete callback if code entered.

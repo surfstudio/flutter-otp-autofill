@@ -26,24 +26,6 @@ const codeFromTestStrategySecond = '23452';
 const codeFromTestStrategyThird = '23453';
 const codeFromOTPInteractor = '67890';
 
-class TestStrategy extends OTPStrategy {
-  final String code;
-  final int _duration;
-
-  TestStrategy({
-    required this.code,
-    int? duration,
-  }) : _duration = duration ?? 300;
-
-  @override
-  Future<String> listenForCode() {
-    return Future.delayed(
-      Duration(milliseconds: _duration),
-      () => 'Your code is $code',
-    );
-  }
-}
-
 Future<void> _futureDelayed() {
   return Future<void>.delayed(
     const Duration(milliseconds: 300),
@@ -51,17 +33,30 @@ Future<void> _futureDelayed() {
 }
 
 void main() {
+  setUpAll(() {
+    registerFallbackValue(Exception());
+  });
+
   late OTPTextEditController controller;
   late MockOTPInteractor otpInteractor;
   late MockPlatformWrapper platformWrapper;
+  late MockOnTimeoutException onTimeOutException;
+  late MockOnException onException;
 
   var codeOnCodeReceive = '';
 
   setUp(() {
     otpInteractor = MockOTPInteractor();
     platformWrapper = MockPlatformWrapper();
-
     when(() => platformWrapper.isAndroid).thenReturn(true);
+
+    onTimeOutException = MockOnTimeoutException();
+    when(() => onTimeOutException.call())
+        .thenAnswer((invocation) => Future<void>.value());
+
+    onException = MockOnException();
+    when(() => onException.call(any()))
+        .thenAnswer((invocation) => Future<void>.value());
 
     controller = OTPTextEditController(
       otpInteractor: otpInteractor,
@@ -70,8 +65,36 @@ void main() {
         codeOnCodeReceive = code;
       },
       platform: platformWrapper,
+      onTimeOutException: onTimeOutException,
+      errorHandler: onException,
     );
   });
+
+  test(
+    'If you do not pass the otpInteractor when creating a OTPTextEditController, '
+    'it will have a default value',
+    () {
+      controller = OTPTextEditController(
+        codeLength: testCode.length,
+        platform: platformWrapper,
+      );
+
+      expect(controller.otpInteractor, isNotNull);
+    },
+  );
+
+  test(
+    'If you do not pass the platform when creating a OTPTextEditController, '
+    'it will have a default value',
+    () {
+      controller = OTPTextEditController(
+        codeLength: testCode.length,
+        otpInteractor: otpInteractor,
+      );
+
+      expect(controller.platform, isNotNull);
+    },
+  );
 
   test(
     'When code filled up onCodeReceive must be called',
@@ -279,6 +302,61 @@ void main() {
           expect(controller.text, equals(codeFromTestStrategyThird));
         },
       );
+
+      test(
+        'If there is a PlatformException(code: 408)(Timeout exception) in the '
+        'startListenUserConsent method, the onTimeOutException method must be called',
+        () async {
+          when(() => platformWrapper.isAndroid).thenReturn(false);
+          when(() => otpInteractor.startListenUserConsent(any())).thenAnswer(
+            (invocation) => Future.value(),
+          );
+          when(() => otpInteractor.stopListenForCode())
+              .thenAnswer((invocation) => Future.value());
+
+          controller.startListenUserConsent(
+            (code) {
+              final exp = RegExp(r'(\d{5})');
+              return exp.stringMatch(code ?? '') ?? '';
+            },
+            strategies: [
+              TestStrategyWithPlatformException(),
+            ],
+            senderNumber: senderNumber,
+          );
+
+          await _futureDelayed();
+
+          verify(() => onTimeOutException()).called(1);
+        },
+      );
+
+      test(
+        'If there is a any Exception(excluding timeout error) in the '
+        'startListenUserConsent method, the handleError method must be called',
+        () async {
+          when(() => platformWrapper.isAndroid).thenReturn(false);
+          when(() => otpInteractor.startListenUserConsent(any()))
+              .thenAnswer((invocation) => Future.value());
+          when(() => otpInteractor.stopListenForCode())
+              .thenAnswer((invocation) => Future.value());
+
+          controller.startListenUserConsent(
+            (code) {
+              final exp = RegExp(r'(\d{5})');
+              return exp.stringMatch(code ?? '') ?? '';
+            },
+            strategies: [
+              TestStrategyWithException(),
+            ],
+            senderNumber: senderNumber,
+          );
+
+          await _futureDelayed();
+
+          verify(() => onException(any())).called(1);
+        },
+      );
     },
   );
 
@@ -413,6 +491,58 @@ void main() {
           expect(controller.text, equals(codeFromTestStrategyThird));
         },
       );
+
+      test(
+        'If there is a PlatformException(code: 408)(Timeout exception) in the '
+        'startListenRetriever method, the onTimeOutException method must be called',
+        () async {
+          when(() => platformWrapper.isAndroid).thenReturn(false);
+          when(() => otpInteractor.startListenRetriever())
+              .thenAnswer((invocation) => Future.value());
+          when(() => otpInteractor.stopListenForCode())
+              .thenAnswer((invocation) => Future.value());
+
+          controller.startListenRetriever(
+            (code) {
+              final exp = RegExp(r'(\d{5})');
+              return exp.stringMatch(code ?? '') ?? '';
+            },
+            additionalStrategies: [
+              TestStrategyWithPlatformException(),
+            ],
+          );
+
+          await _futureDelayed();
+
+          verify(() => onTimeOutException()).called(1);
+        },
+      );
+
+      test(
+        'If there is a any Exception(excluding timeout error) in the '
+        'startListenRetriever method, the handleError method must be called',
+        () async {
+          when(() => platformWrapper.isAndroid).thenReturn(false);
+          when(() => otpInteractor.startListenRetriever())
+              .thenAnswer((invocation) => Future.value());
+          when(() => otpInteractor.stopListenForCode())
+              .thenAnswer((invocation) => Future.value());
+
+          controller.startListenRetriever(
+            (code) {
+              final exp = RegExp(r'(\d{5})');
+              return exp.stringMatch(code ?? '') ?? '';
+            },
+            additionalStrategies: [
+              TestStrategyWithException(),
+            ],
+          );
+
+          await _futureDelayed();
+
+          verify(() => onException(any())).called(1);
+        },
+      );
     },
   );
 
@@ -429,8 +559,48 @@ void main() {
   );
 }
 
+class TestStrategy extends OTPStrategy {
+  final dynamic code;
+  final int _duration;
+
+  TestStrategy({
+    this.code,
+    int? duration,
+  }) : _duration = duration ?? 300;
+
+  @override
+  Future<String> listenForCode() {
+    return Future.delayed(
+      Duration(milliseconds: _duration),
+      () => 'Your code is $code',
+    );
+  }
+}
+
+class TestStrategyWithPlatformException extends OTPStrategy {
+  @override
+  Future<String> listenForCode() {
+    return Future.error(PlatformException(code: '408'));
+  }
+}
+
+class TestStrategyWithException extends OTPStrategy {
+  @override
+  Future<String> listenForCode() {
+    return Future.error(Exception());
+  }
+}
+
 class MockMethodChannel extends Mock implements MethodChannel {}
 
 class MockPlatformWrapper extends Mock implements PlatformWrapper {}
 
 class MockOTPInteractor extends Mock implements OTPInteractor {}
+
+class MockOnTimeoutException extends Mock {
+  void call();
+}
+
+class MockOnException extends Mock {
+  void call(Exception error);
+}
