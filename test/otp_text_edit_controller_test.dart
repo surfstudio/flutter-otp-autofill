@@ -19,6 +19,7 @@ import 'package:otp_autofill/otp_autofill.dart';
 import 'package:otp_autofill/src/base/strategy.dart';
 import 'package:otp_autofill/src/otp_text_edit_controller.dart';
 import 'package:otp_autofill/src/utill/platform_wrapper.dart';
+import 'package:surf_lint_rules/surf_lint_rules.dart';
 
 const testCode = '54321';
 const codeFromTestStrategyFirst = '23451';
@@ -177,7 +178,7 @@ void main() {
           when(() => otpInteractor.stopListenForCode())
               .thenAnswer((invocation) => Future.value());
 
-          controller.startListenUserConsent(
+          await controller.startListenUserConsent(
             (code) {
               final exp = RegExp(r'(\d{5})');
               return exp.stringMatch(code ?? '') ?? '';
@@ -185,8 +186,6 @@ void main() {
             strategies: [TestStrategy(code: testCode)],
             senderNumber: senderNumber,
           );
-
-          await _futureDelayed();
 
           verify(() => otpInteractor.startListenUserConsent(senderNumber))
               .called(1);
@@ -203,13 +202,15 @@ void main() {
           when(() => otpInteractor.stopListenForCode())
               .thenAnswer((invocation) => Future.value());
 
-          controller.startListenUserConsent(
-            (code) {
-              final exp = RegExp(r'(\d{5})');
-              return exp.stringMatch(code ?? '') ?? '';
-            },
-            strategies: [TestStrategy(code: testCode)],
-            senderNumber: senderNumber,
+          unawaited(
+            controller.startListenUserConsent(
+              (code) {
+                final exp = RegExp(r'(\d{5})');
+                return exp.stringMatch(code ?? '') ?? '';
+              },
+              strategies: [TestStrategy(code: testCode)],
+              senderNumber: senderNumber,
+            ),
           );
 
           expect(controller.text, isEmpty);
@@ -237,18 +238,20 @@ void main() {
           when(() => otpInteractor.stopListenForCode())
               .thenAnswer((invocation) => Future.value());
 
-          controller.startListenUserConsent(
-            (code) {
-              final exp = RegExp(r'(\d{5})');
-              return exp.stringMatch(code ?? '') ?? '';
-            },
-            strategies: [
-              TestStrategy(
-                code: codeFromTestStrategyFirst,
-                duration: 10,
-              ),
-            ],
-            senderNumber: senderNumber,
+          unawaited(
+            controller.startListenUserConsent(
+              (code) {
+                final exp = RegExp(r'(\d{5})');
+                return exp.stringMatch(code ?? '') ?? '';
+              },
+              strategies: [
+                TestStrategy(
+                  code: codeFromTestStrategyFirst,
+                  duration: 10,
+                ),
+              ],
+              senderNumber: senderNumber,
+            ),
           );
 
           expect(controller.text, isEmpty);
@@ -273,26 +276,28 @@ void main() {
           when(() => otpInteractor.stopListenForCode())
               .thenAnswer((invocation) => Future.value());
 
-          controller.startListenUserConsent(
-            (code) {
-              final exp = RegExp(r'(\d{5})');
-              return exp.stringMatch(code ?? '') ?? '';
-            },
-            strategies: [
-              TestStrategy(
-                code: codeFromTestStrategyFirst,
-                duration: 15,
-              ),
-              TestStrategy(
-                code: codeFromTestStrategySecond,
-                duration: 10,
-              ),
-              TestStrategy(
-                code: codeFromTestStrategyThird,
-                duration: 5,
-              ),
-            ],
-            senderNumber: senderNumber,
+          unawaited(
+            controller.startListenUserConsent(
+              (code) {
+                final exp = RegExp(r'(\d{5})');
+                return exp.stringMatch(code ?? '') ?? '';
+              },
+              strategies: [
+                TestStrategy(
+                  code: codeFromTestStrategyFirst,
+                  duration: 15,
+                ),
+                TestStrategy(
+                  code: codeFromTestStrategySecond,
+                  duration: 10,
+                ),
+                TestStrategy(
+                  code: codeFromTestStrategyThird,
+                  duration: 5,
+                ),
+              ],
+              senderNumber: senderNumber,
+            ),
           );
 
           expect(controller.text, isEmpty);
@@ -314,7 +319,7 @@ void main() {
           when(() => otpInteractor.stopListenForCode())
               .thenAnswer((invocation) => Future.value());
 
-          controller.startListenUserConsent(
+          await controller.startListenUserConsent(
             (code) {
               final exp = RegExp(r'(\d{5})');
               return exp.stringMatch(code ?? '') ?? '';
@@ -324,8 +329,6 @@ void main() {
             ],
             senderNumber: senderNumber,
           );
-
-          await _futureDelayed();
 
           verify(() => onTimeOutException()).called(1);
         },
@@ -341,7 +344,7 @@ void main() {
           when(() => otpInteractor.stopListenForCode())
               .thenAnswer((invocation) => Future.value());
 
-          controller.startListenUserConsent(
+          await controller.startListenUserConsent(
             (code) {
               final exp = RegExp(r'(\d{5})');
               return exp.stringMatch(code ?? '') ?? '';
@@ -352,9 +355,33 @@ void main() {
             senderNumber: senderNumber,
           );
 
-          await _futureDelayed();
-
           verify(() => onException(any())).called(1);
+        },
+      );
+
+      test(
+        'If there is a any Exception(excluding timeout error) in the '
+        'startListenUserConsent method, the handleError method must be called',
+        () async {
+          when(() => platformWrapper.isAndroid).thenReturn(false);
+          when(() => otpInteractor.startListenUserConsent(any()))
+              .thenAnswer((invocation) => Future.value());
+          when(() => otpInteractor.stopListenForCode())
+              .thenAnswer((invocation) => Future.value());
+
+          expect(
+            () async => controller.startListenUserConsent(
+              (code) {
+                final exp = RegExp(r'(\d{5})');
+                return exp.stringMatch(code ?? '') ?? '';
+              },
+              strategies: [
+                TestStrategyWithUnexpectedException(),
+              ],
+              senderNumber: senderNumber,
+            ),
+            throwsException,
+          );
         },
       );
     },
@@ -373,15 +400,13 @@ void main() {
           when(() => otpInteractor.stopListenForCode())
               .thenAnswer((invocation) => Future.value());
 
-          controller.startListenRetriever(
+          await controller.startListenRetriever(
             (code) {
               final exp = RegExp(r'(\d{5})');
               return exp.stringMatch(code ?? '') ?? '';
             },
             additionalStrategies: [TestStrategy(code: testCode)],
           );
-
-          await _futureDelayed();
 
           verify(() => otpInteractor.startListenRetriever()).called(1);
         },
@@ -396,14 +421,16 @@ void main() {
           when(() => otpInteractor.startListenRetriever())
               .thenAnswer((invocation) => Future.value(codeFromOTPInteractor));
 
-          controller.startListenRetriever(
-            (code) {
-              final exp = RegExp(r'(\d{5})');
-              return exp.stringMatch(code ?? '') ?? '';
-            },
-            additionalStrategies: [
-              TestStrategy(code: codeFromTestStrategyFirst),
-            ],
+          unawaited(
+            controller.startListenRetriever(
+              (code) {
+                final exp = RegExp(r'(\d{5})');
+                return exp.stringMatch(code ?? '') ?? '';
+              },
+              additionalStrategies: [
+                TestStrategy(code: codeFromTestStrategyFirst),
+              ],
+            ),
           );
 
           expect(controller.text, isEmpty);
@@ -429,17 +456,19 @@ void main() {
           when(() => otpInteractor.stopListenForCode())
               .thenAnswer((invocation) => Future.value());
 
-          controller.startListenRetriever(
-            (code) {
-              final exp = RegExp(r'(\d{5})');
-              return exp.stringMatch(code ?? '') ?? '';
-            },
-            additionalStrategies: [
-              TestStrategy(
-                code: codeFromTestStrategyFirst,
-                duration: 10,
-              ),
-            ],
+          unawaited(
+            controller.startListenRetriever(
+              (code) {
+                final exp = RegExp(r'(\d{5})');
+                return exp.stringMatch(code ?? '') ?? '';
+              },
+              additionalStrategies: [
+                TestStrategy(
+                  code: codeFromTestStrategyFirst,
+                  duration: 10,
+                ),
+              ],
+            ),
           );
 
           expect(controller.text, isEmpty);
@@ -463,25 +492,27 @@ void main() {
           when(() => otpInteractor.stopListenForCode())
               .thenAnswer((invocation) => Future.value());
 
-          controller.startListenRetriever(
-            (code) {
-              final exp = RegExp(r'(\d{5})');
-              return exp.stringMatch(code ?? '') ?? '';
-            },
-            additionalStrategies: [
-              TestStrategy(
-                code: codeFromTestStrategyFirst,
-                duration: 15,
-              ),
-              TestStrategy(
-                code: codeFromTestStrategySecond,
-                duration: 10,
-              ),
-              TestStrategy(
-                code: codeFromTestStrategyThird,
-                duration: 5,
-              ),
-            ],
+          unawaited(
+            controller.startListenRetriever(
+              (code) {
+                final exp = RegExp(r'(\d{5})');
+                return exp.stringMatch(code ?? '') ?? '';
+              },
+              additionalStrategies: [
+                TestStrategy(
+                  code: codeFromTestStrategyFirst,
+                  duration: 15,
+                ),
+                TestStrategy(
+                  code: codeFromTestStrategySecond,
+                  duration: 10,
+                ),
+                TestStrategy(
+                  code: codeFromTestStrategyThird,
+                  duration: 5,
+                ),
+              ],
+            ),
           );
 
           expect(controller.text, isEmpty);
@@ -502,17 +533,16 @@ void main() {
           when(() => otpInteractor.stopListenForCode())
               .thenAnswer((invocation) => Future.value());
 
-          controller.startListenRetriever(
+          await controller.startListenRetriever(
             (code) {
               final exp = RegExp(r'(\d{5})');
               return exp.stringMatch(code ?? '') ?? '';
             },
             additionalStrategies: [
+              // Strategy will throw PlatformException.
               TestStrategyWithPlatformException(),
             ],
           );
-
-          await _futureDelayed();
 
           verify(() => onTimeOutException()).called(1);
         },
@@ -528,19 +558,44 @@ void main() {
           when(() => otpInteractor.stopListenForCode())
               .thenAnswer((invocation) => Future.value());
 
-          controller.startListenRetriever(
+          await controller.startListenRetriever(
             (code) {
               final exp = RegExp(r'(\d{5})');
               return exp.stringMatch(code ?? '') ?? '';
             },
             additionalStrategies: [
+              // Strategy will throw Exception.
               TestStrategyWithException(),
             ],
           );
 
-          await _futureDelayed();
-
           verify(() => onException(any())).called(1);
+        },
+      );
+
+      test(
+        'If there is a any Unexpected exception in the '
+        'startListenRetriever method shuold throw Ecxeption',
+        () async {
+          when(() => platformWrapper.isAndroid).thenReturn(false);
+          when(() => otpInteractor.startListenRetriever())
+              .thenAnswer((invocation) => Future.value());
+          when(() => otpInteractor.stopListenForCode())
+              .thenAnswer((invocation) => Future.value());
+
+          expect(
+            () async => controller.startListenRetriever(
+              (code) {
+                final exp = RegExp(r'(\d{5})');
+                return exp.stringMatch(code ?? '') ?? '';
+              },
+              additionalStrategies: [
+                // Strategy will throw AssertionError.
+                TestStrategyWithUnexpectedException(),
+              ],
+            ),
+            throwsException,
+          );
         },
       );
     },
@@ -588,6 +643,13 @@ class TestStrategyWithException extends OTPStrategy {
   @override
   Future<String> listenForCode() {
     return Future.error(Exception());
+  }
+}
+
+class TestStrategyWithUnexpectedException extends OTPStrategy {
+  @override
+  Future<String> listenForCode() {
+    return Future.error(AssertionError());
   }
 }
 
