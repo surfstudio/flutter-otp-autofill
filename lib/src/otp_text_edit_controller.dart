@@ -76,7 +76,7 @@ class OTPTextEditController extends TextEditingController {
       if (strategiesListen != null) ...strategiesListen,
     ];
 
-   return Stream.fromFutures(list).first.then(
+    return Stream.fromFutures(list).first.then(
       (value) {
         if (autoStop) {
           stopListen();
