@@ -63,7 +63,7 @@ class OTPTextEditController extends TextEditingController {
   /// Start listen for OTP code with User Consent API
   /// sms by default
   /// could be added another input as [OTPStrategy].
-  void startListenUserConsent(
+  Future<void> startListenUserConsent(
     ExtractStringCallback codeExtractor, {
     List<OTPStrategy>? strategies,
     String? senderNumber,
@@ -76,7 +76,7 @@ class OTPTextEditController extends TextEditingController {
       if (strategiesListen != null) ...strategiesListen,
     ];
 
-    Stream.fromFutures(list).first.then(
+    return Stream.fromFutures(list).first.then(
       (value) {
         if (autoStop) {
           stopListen();
@@ -103,7 +103,7 @@ class OTPTextEditController extends TextEditingController {
   /// Start listen for OTP code with Retriever API
   /// sms by default
   /// could be added another input as [OTPStrategy].
-  void startListenRetriever(
+  Future<void> startListenRetriever(
     ExtractStringCallback codeExtractor, {
     List<OTPStrategy>? additionalStrategies,
   }) {
@@ -112,7 +112,7 @@ class OTPTextEditController extends TextEditingController {
       (e) => e.listenForCode(),
     );
 
-    Stream.fromFutures([
+    return Stream.fromFutures([
       if (platform.isAndroid) smsListen,
       if (strategiesListen != null) ...strategiesListen,
     ]).first.then(
