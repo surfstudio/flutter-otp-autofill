@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.1.0
+
+* Change API: `startListenUserConsent` and `startListenRetriever` returns Future
+
 ## 2.0.0
 
 * Static methods of OTPInteractor have been removed. Improved dependency passing.
