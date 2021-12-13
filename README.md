@@ -74,14 +74,14 @@ For easy implementation you could use `OTPTextEditController` as a controller to
 
 ## Installation
 
-Add `otp-autofill` to your `pubspec.yaml` file:
+Add `otp_autofill` to your `pubspec.yaml` file:
 
 ```yaml
 dependencies:
-  otp-autofill: $currentVersion$
+  otp_autofill: $currentVersion$
 ```
 
-<p>At this moment, the current version of <code>otp-autofill</code> is <a href="https://pub.dev/packages/otp_autofill"><img style="vertical-align:middle;" src="https://img.shields.io/pub/v/otp_autofill.svg" alt="otp_autofill version"></a>.</p>
+<p>At this moment, the current version of <code>otp_autofill</code> is <a href="https://pub.dev/packages/otp_autofill"><img style="vertical-align:middle;" src="https://img.shields.io/pub/v/otp_autofill.svg" alt="otp_autofill version"></a>.</p>
 
 ### Android Installation
 
