@@ -17,6 +17,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:otp_autofill/otp_autofill.dart';
 import 'package:otp_autofill_example/sample_strategy.dart';
+import 'package:otp_autofill_example/screens/login_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -68,13 +69,34 @@ class _MyAppState extends State<MyApp> {
           title: const Text('Plugin example app'),
         ),
         body: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(40.0),
-            child: TextField(
-              textAlign: TextAlign.center,
-              keyboardType: TextInputType.number,
-              controller: controller,
-            ),
+          child: Builder(
+            builder: (context) {
+              return Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(40.0),
+                    child: TextField(
+                      textAlign: TextAlign.center,
+                      keyboardType: TextInputType.number,
+                      controller: controller,
+                    ),
+                  ),
+                  const SizedBox(height: 40),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.push<void>(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => const LoginScreen(),
+                        ),
+                      );
+                    },
+                    child: const Text('Экран логина'),
+                  ),
+                ],
+              );
+            },
           ),
         ),
       ),
