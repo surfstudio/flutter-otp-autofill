@@ -124,7 +124,8 @@ final scaffoldKey = GlobalKey();
 @override
 void initState() {
   super.initState();
-  OTPInteractor.getAppSignature()
+  _otpInteractor = OTPInteractor();
+  _otpInteractor.getAppSignature()
       .then((value) => print('signature - $value'));
   controller = OTPTextEditController(
     codeLength: 5,
