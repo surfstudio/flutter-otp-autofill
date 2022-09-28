@@ -142,6 +142,38 @@ void initState() {
 }
 ```
 
+## Send new code
+
+To get new code you can pass callback onTimeout Exception to detect and process this situation.
+
+```dart
+controller = OTPTextEditController(
+      codeLength: 5,
+      onCodeReceive: (code) => print('Your Application receive code - $code'),
+      otpInteractor: _otpInteractor,
+      onTimeOutException: () {
+        //TODO: start new listen to get new code
+        controller.startListenUserConsent(
+          (code) {
+            final exp = RegExp(r'(\d{5})');
+            return exp.stringMatch(code ?? '') ?? '';
+          },
+          strategies: [
+            SampleStrategy(),
+          ],
+        );
+      },
+    )..startListenUserConsent(
+        (code) {
+          final exp = RegExp(r'(\d{5})');
+          return exp.stringMatch(code ?? '') ?? '';
+        },
+        strategies: [
+          TimeoutStrategy(),
+        ],
+      );
+```
+
 ## Changelog
 
 All notable changes to this project will be documented in [this file](./CHANGELOG.md).
