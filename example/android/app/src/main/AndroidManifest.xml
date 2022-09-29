@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.test_otp_autofill">
+    package="ru.surfstudio.otp_autofill_example">
    <application
         android:label="test_otp_autofill"
         android:name="${applicationName}"
