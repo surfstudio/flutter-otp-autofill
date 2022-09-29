@@ -1,4 +1,4 @@
-package ru.surfstudio.otp_autofill_example
+package com.example.test_otp_autofill
 
 import io.flutter.embedding.android.FlutterActivity
 
