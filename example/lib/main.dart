@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:otp_autofill/otp_autofill.dart';
@@ -37,7 +36,6 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
-    getNumber();
     super.initState();
     _otpInteractor = OTPInteractor();
     _otpInteractor
@@ -59,11 +57,6 @@ class _MyAppState extends State<MyApp> {
           SampleStrategy(),
         ],
       );
-
-    // Future.delayed(const Duration(seconds: 2), () async {
-    //   final hint = await _otpInteractor.hint;
-    //   log(hint!);
-    // });
   }
 
   @override
@@ -84,9 +77,6 @@ class _MyAppState extends State<MyApp> {
             ),
           ),
         ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: getNumber,
-        ),
       ),
     );
   }
@@ -95,11 +85,5 @@ class _MyAppState extends State<MyApp> {
   Future<void> dispose() async {
     await controller.stopListen();
     super.dispose();
-  }
-
-  Future<dynamic> getNumber() async {
-    var _otpInteractor = OTPInteractor();
-    var number = await _otpInteractor.hint;
-    debugPrint('$number');
   }
 }
