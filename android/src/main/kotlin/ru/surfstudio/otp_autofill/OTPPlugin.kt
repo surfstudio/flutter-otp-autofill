@@ -93,9 +93,9 @@ public class OTPPlugin : FlutterPlugin, MethodCallHandler, PluginRegistry.Activi
     }
 
     private fun showNumberHint(result: Result) {
-        if(activity == null) return
-
         lastResult = result
+        
+        if(activity == null) return
 
         Identity.getSignInClient(activity!!)
             .getPhoneNumberHintIntent(request)
