@@ -1,4 +1,7 @@
 # Changelog
+## 3.0.0
+* Breaking: Upgraded phone number hint API. Now may require updating Google Services on the device.  
+
 
 ## 2.1.0
 
