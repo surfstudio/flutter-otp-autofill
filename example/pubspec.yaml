@@ -16,7 +16,6 @@ dependencies:
 
 dev_dependencies:
   surf_lint_rules: ^1.0.0
-  change_app_package_name: ^1.1.0
 
 flutter:
   uses-material-design: true
