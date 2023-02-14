@@ -96,7 +96,9 @@ public class OTPPlugin : FlutterPlugin, MethodCallHandler, PluginRegistry.Activi
         lastResult = result
         
         if(activity == null) return
-
+        
+        // if activity is not null will build 'show hint' intent
+        // on success will start showing hint
         Identity.getSignInClient(activity!!)
             .getPhoneNumberHintIntent(request)
             .addOnSuccessListener { res ->
