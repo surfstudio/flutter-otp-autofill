@@ -3,6 +3,10 @@
 * Breaking: Upgraded phone number hint API. Now may require updating Google Services on the device.  
 
 
+## 2.1.1
+
+* Fixed example
+
 ## 2.1.0
 
 * Change API: `startListenUserConsent` and `startListenRetriever` returns Future
