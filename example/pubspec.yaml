@@ -15,7 +15,7 @@ dependencies:
 
 
 dev_dependencies:
-  surf_lint_rules: ^1.0.0
+  surf_lint_rules: ^1.5.0
 
 flutter:
   uses-material-design: true
