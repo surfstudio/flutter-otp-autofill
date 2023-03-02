@@ -4,7 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import androidx.annotation.NonNull;
+import androidx.annotation.NonNull
 import com.google.android.gms.auth.api.credentials.Credential
 import com.google.android.gms.auth.api.credentials.Credentials
 import com.google.android.gms.auth.api.credentials.HintRequest
@@ -38,7 +38,7 @@ const val getAppSignatureMethod: String = "getAppSignature"
 const val senderTelephoneNumber: String = "senderTelephoneNumber"
 
 /** OtpTextEditControllerPlugin */
-public class OTPPlugin : FlutterPlugin, MethodCallHandler, PluginRegistry.ActivityResultListener, ActivityAware {
+class OTPPlugin : FlutterPlugin, MethodCallHandler, PluginRegistry.ActivityResultListener, ActivityAware {
 
     private lateinit var channel: MethodChannel
 
@@ -110,6 +110,7 @@ public class OTPPlugin : FlutterPlugin, MethodCallHandler, PluginRegistry.Activi
 
     override fun onDetachedFromEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) {
         channel.setMethodCallHandler(null)
+        unRegisterBroadcastReceivers()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?): Boolean {
