@@ -113,6 +113,7 @@ class OTPPlugin : FlutterPlugin, MethodCallHandler, PluginRegistry.ActivityResul
 
     override fun onDetachedFromEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) {
         channel.setMethodCallHandler(null)
+        /// when activity being replaced by another activity or destroyed - unregister receivers
         unRegisterBroadcastReceivers()
     }
 
