@@ -12,10 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// ignore_for_file: library_private_types_in_public_api
+// ignore_for_file: library_private_types_in_public_api, prefer-match-file-name
 
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:otp_autofill/otp_autofill.dart';
 import 'package:otp_autofill_example/sample_strategy.dart';
@@ -39,11 +40,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    _otpInteractor = OTPInteractor();
-    _otpInteractor
-        .getAppSignature()
-        //ignore: avoid_print
-        .then((value) => print('signature - $value'));
+    unawaited(_initInteractor());
 
     controller = OTPTextEditController(
       codeLength: 5,
@@ -59,6 +56,22 @@ class _MyAppState extends State<MyApp> {
           SampleStrategy(),
         ],
       );
+  }
+
+  /// Initialization of OTP interactor.
+  Future<void> _initInteractor() async {
+    _otpInteractor = OTPInteractor();
+    final appSignature = await _otpInteractor.getAppSignature();
+
+    if (kDebugMode) {
+      print('$appSignature - Your app signature');
+    }
+  }
+
+  @override
+  Future<void> dispose() async {
+    await controller.stopListen();
+    super.dispose();
   }
 
   @override
@@ -81,11 +94,5 @@ class _MyAppState extends State<MyApp> {
         ),
       ),
     );
-  }
-
-  @override
-  Future<void> dispose() async {
-    await controller.stopListen();
-    super.dispose();
   }
 }
