@@ -7,7 +7,9 @@ on:
 
 jobs:
   analysis:
-    uses: surfstudio/flutter-ci-workflows/.github/workflows/analysis.yml@main
+    uses: surfstudio/flutter-ci-workflows/.github/workflows/analysis.yml@feat_flutter_versioning
+    with:
+      flutter-version: '3.7.6'
 
   testing:
     needs: analysis

@@ -8,22 +8,29 @@ on:
     branches:
       - main
     tags-ignore:
-      - '**'
+      - "**"
 
 jobs:
   analysis:
-    uses: surfstudio/flutter-ci-workflows/.github/workflows/analysis.yml@main
+    uses: surfstudio/flutter-ci-workflows/.github/workflows/analysis.yml@feat_flutter_versioning
+    with:
+      flutter-version: 3.7.6
 
   testing:
     needs: analysis
-    uses: surfstudio/flutter-ci-workflows/.github/workflows/testing.yml@main
+    uses: surfstudio/flutter-ci-workflows/.github/workflows/testing.yml@feat_flutter_versioning
     secrets:
       CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+    with:
+      flutter-version: 3.7.6
 
   build_android_example:
     needs: analysis
-    uses: surfstudio/flutter-ci-workflows/.github/workflows/build_android_example.yml@main
-
+    uses: surfstudio/flutter-ci-workflows/.github/workflows/build_android_example.yml@feat_flutter_versioning
+    with:
+      flutter-version: 3.7.6
   build_ios_example:
     needs: analysis
-    uses: surfstudio/flutter-ci-workflows/.github/workflows/build_ios_example.yml@main
+    uses: surfstudio/flutter-ci-workflows/.github/workflows/build_ios_example.yml@feat_flutter_versioning
+    with:
+      flutter-version: 3.7.6
