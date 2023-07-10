@@ -8,6 +8,8 @@ on:
 jobs:
   analysis:
     uses: surfstudio/flutter-ci-workflows/.github/workflows/analysis.yml@main
+    with:
+      flutter-version: "3.7.6"
 
   testing:
     needs: analysis
