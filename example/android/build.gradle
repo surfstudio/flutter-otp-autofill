@@ -1,3 +1,5 @@
+package example.android
+
 buildscript {
     ext.kotlin_version = '1.6.10'
     repositories {
