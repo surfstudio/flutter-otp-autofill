@@ -19,6 +19,7 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:otp_autofill/otp_autofill.dart';
+import 'package:otp_autofill_example/sample_strategy.dart';
 
 void main() {
   runApp(const MyApp());
@@ -51,7 +52,7 @@ class _MyAppState extends State<MyApp> {
           return exp.stringMatch(code ?? '') ?? '';
         },
         strategies: [
-          // SampleStrategy(),
+          SampleStrategy(),
         ],
       );
   }
@@ -68,8 +69,8 @@ class _MyAppState extends State<MyApp> {
   }
 
   @override
-  Future<void> dispose() async {
-    await controller.stopListen();
+  void dispose() {
+    controller.stopListen();
     super.dispose();
   }
 
