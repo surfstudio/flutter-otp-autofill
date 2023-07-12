@@ -125,6 +125,7 @@ class OTPPlugin : FlutterPlugin, MethodCallHandler, PluginRegistry.ActivityResul
                     // Get SMS message content
                     val message = data.getStringExtra(SmsRetriever.EXTRA_SMS_MESSAGE)
                     lastResult?.success(message)
+                    lastResult = null
                 } else {
                     // Consent denied. User can type OTC manually.
                 }
@@ -132,6 +133,7 @@ class OTPPlugin : FlutterPlugin, MethodCallHandler, PluginRegistry.ActivityResul
                 val phoneNumber =
                     Identity.getSignInClient(context!!).getPhoneNumberFromIntent(data)
                 lastResult?.success(phoneNumber)
+                lastResult = null
             }
         }
         return true
@@ -172,6 +174,7 @@ class OTPPlugin : FlutterPlugin, MethodCallHandler, PluginRegistry.ActivityResul
 
                 override fun onFailure() {
                     lastResult?.error("408", "Timeout exception", null)
+                    lastResult = null
                 }
             }
         }
@@ -184,11 +187,15 @@ class OTPPlugin : FlutterPlugin, MethodCallHandler, PluginRegistry.ActivityResul
         smsRetrieverBroadcastReceiver = SmsRetrieverReceiver().also {
             it.smsBroadcastReceiverListener = object : SmsRetrieverReceiver.SmsRetrieverBroadcastReceiverListener {
                 override fun onSuccess(sms: String?) {
-                    sms?.let { it -> lastResult?.success(it) }
+                    sms?.let { it ->
+                        lastResult?.success(it)
+                        lastResult = null
+                    }
                 }
 
                 override fun onFailure() {
                     lastResult?.error("408", "Timeout exception", null)
+                    lastResult = null
                 }
             }
         }
