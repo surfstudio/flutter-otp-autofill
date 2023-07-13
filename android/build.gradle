@@ -1,5 +1,3 @@
-package android
-
 group 'ru.surfstudio.otp_autofill'
 version '1.0-SNAPSHOT'
 
