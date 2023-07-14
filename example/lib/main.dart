@@ -69,8 +69,8 @@ class _MyAppState extends State<MyApp> {
   }
 
   @override
-  Future<void> dispose() async {
-    await controller.stopListen();
+  void dispose() {
+    controller.stopListen();
     super.dispose();
   }
 

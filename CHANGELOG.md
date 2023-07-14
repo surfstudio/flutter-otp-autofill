@@ -1,7 +1,11 @@
 # Changelog
-## 3.0.0
-* Breaking: Upgraded phone number hint API. Now may require updating Google Services on the device.  
 
+## 3.0.0
+
+* Breaking: Upgraded phone number hint API. Now may require updating Google Services on the device.
+* Added base test case for package testing.
+* Fix example of project.
+* Fix Android App crash when phone allowed two SMS at the same time.
 
 ## 2.1.1
 
