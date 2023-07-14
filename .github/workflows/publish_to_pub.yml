@@ -33,12 +33,13 @@ jobs:
       flutter-version: ${{ needs.get_fvm_version.outputs.flutter_version }}
     secrets:
       CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-      
+
   package-publishing:
-    needs: [ analysis, testing ]
+    needs: [analysis, testing, get_fvm_version]
     uses: surfstudio/flutter-ci-workflows/.github/workflows/publish_to_pub.yml@main
     with:
-      PANA_TOTAL: '100'
+      flutter-version: ${{ needs.get_fvm_version.outputs.flutter_version }}
+      PANA_TOTAL: "100"
     secrets:
       PUB_CREDENTIAL_JSON: ${{ secrets.PUB_CREDENTIAL_JSON }}
       PUB_OAUTH_ACCESS_TOKEN: ${{ secrets.PUB_OAUTH_ACCESS_TOKEN }}
