@@ -1,4 +1,4 @@
-# Testing steps
+## Testing steps
 
 > These steps is example of testing package`s current stability.
 
