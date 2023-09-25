@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.os.Build
 import androidx.activity.result.IntentSenderRequest.*
 import androidx.annotation.NonNull;
 import com.google.android.gms.auth.api.identity.GetPhoneNumberHintIntentRequest
@@ -201,7 +202,12 @@ class OTPPlugin : FlutterPlugin, MethodCallHandler, PluginRegistry.ActivityResul
         }
 
         val intentFilter = IntentFilter(SmsRetriever.SMS_RETRIEVED_ACTION)
-        this.activity?.registerReceiver(smsRetrieverBroadcastReceiver, intentFilter)
+        if(Build.VERSION_CODES.O <= Build.VERSION.SDK_INT) {
+            this.activity?.registerReceiver(smsRetrieverBroadcastReceiver, intentFilter,Context.RECEIVER_EXPORTED)
+        }else {
+
+            this.activity?.registerReceiver(smsRetrieverBroadcastReceiver, intentFilter)
+        }
     }
 
     private fun unRegisterBroadcastReceivers() {
