@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.0.1
+
+* Fix Android App crash on Android version 14.
+
 ## 3.0.0
 
 * Breaking: Upgraded phone number hint API. Now may require updating Google Services on the device.
