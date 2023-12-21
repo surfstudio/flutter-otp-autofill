@@ -218,7 +218,12 @@ class OTPPlugin : FlutterPlugin, MethodCallHandler, PluginRegistry.ActivityResul
         }
 
         val intentFilter = IntentFilter(SmsRetriever.SMS_RETRIEVED_ACTION)
-        this.activity?.registerReceiver(smsRetrieverBroadcastReceiver, intentFilter)
+        if(Build.VERSION_CODES.O <= Build.VERSION.SDK_INT) {
+            this.activity?.registerReceiver(smsRetrieverBroadcastReceiver, intentFilter,Context.RECEIVER_EXPORTED)
+        }else {
+
+            this.activity?.registerReceiver(smsRetrieverBroadcastReceiver, intentFilter)
+        }
     }
 
     private fun unRegisterBroadcastReceivers() {
