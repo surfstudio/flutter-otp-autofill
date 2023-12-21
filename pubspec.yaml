@@ -1,5 +1,5 @@
 name: otp_autofill
-version: 3.0.1
+version: 3.0.2
 description: Android implementation of OTP autofill with using User Consent API and Retriever API. Add possibility to receive OTP code from another input.
 repository: "https://github.com/surfstudio/flutter-otp-autofill"
 issue_tracker: "https://github.com/surfstudio/flutter-otp-autofill/issues"

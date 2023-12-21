@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.0.2
+
+* Fix SmsRetrieverBroadcastReceiver on Android 14.
+
 ## 3.0.1
 
 * Fix Android App crash on Android version 14.
