@@ -21,51 +21,51 @@ For testing you could create `TestStrategy`.
 
 ## iOS
 
-On iOS OTP autofill is built in `TextField`.
-Code from sms stores for 3 minutes.
+On iOS, the OTP autofill feature is integrated into the `TextField` component. 
+The code received from an SMS is stored for a duration of 3 minutes.
 
 ### Rules for sms
 
-1. Sms must contain the word `code` or its translation to iOS supported localizations.
-2. There must be only one digit sequence in the sms.
+1. Sms must contain the word `code` or its translation in iOS supported localizations.
+2. The sms should contain only one sequence of digits.
 
 ### iOS Testing
 
-iOS can receive number from any other number.
+The iOS platform is capable of receiving OTP from any phone number, not just a specific sender.
 
 ## Android
 
-`OTPInteractor.hint` - show system dialog to select saved phone numbers (recommendation from Google).
+`OTPInteractor.hint` - displays a system dialog that allows the user to select from their saved phone numbers (recommendation from Google).
 `OTPInteractor.getAppSignature` - create hash-code of your application, that is used in [SMS Retriever API](https://developers.google.com/identity/sms-retriever/overview).
 `OTPInteractor.startListenUserConsent` - BroadcastReceiver starts listening for code from Google Services for 5 minutes. Above 5 minutes, a timeout exception is raised. Using [SMS User Consent API](https://developers.google.com/identity/sms-retriever/user-consent/overview).
 `OTPInteractor.startListenRetriever` - BroadcastReceiver starts listening for code from Google Services for 5 minutes. Above 5 minutes, a timeout exception is raised. Using [SMS Retriever API](https://developers.google.com/identity/sms-retriever/overview).
 `OTPInteractor.stopListenForCode` - used in dispose.
 
-The plugin receives the full sms text and needs a parser for the sms.
+The plugin is designed to receive the entire text of an SMS message and requires a parser to extract relevant information from the message.
 
-If you use [SMS User Consent API](https://developers.google.com/identity/sms-retriever/user-consent/overview), then the system asks for permission to read incoming messages.
+If you use [SMS User Consent API](https://developers.google.com/identity/sms-retriever/user-consent/overview), the system will prompt the user for permission to access and read incoming messages.
 
 ### Rules for sms. SMS User Consent API
 
-1. The message contains a 4-10 character alphanumeric string with at least one number.
+1. The message should have a 4-10 character alphanumeric string with at least one number.
 2. The message was sent by a phone number that's not in the user's contacts.
-3. If you specified the sender's phone number, the message was sent by that number.
+3. If the sender's phone number is specified, the message must be sent from that number.
 
 ### Rules for sms. SMS Retriever API
 
-1. It should not be longer than 140 bytes.
+1. It should not exceed 140 bytes in length.
 2. It should contain a one-time code that the client sends back to your server to complete the verification flow.
 3. It should include an 11-character hash string that identifies your app ([documentation for server](https://developers.google.com/identity/sms-retriever/verify#computing_your_apps_hash_string), for testing you can get it from `OTPInteractor.getAppSignature`).
 
 ### Android Testing
 
-`OTPInteractor.startListenForCode` has a `senderPhone` argument. The application starts receiving code from this number.
+The `OTPInteractor.startListenForCode` method allows the application to start receiving verification codes from a specific phone number specified by the `senderPhone` argument.
 
 ## Usage
 
 You could use `OTPInteractor` to interact with OTP.
 
-For easy implementation, you could use `OTPTextEditController` as a controller for your `TextField`.
+To simplify implementation, you can use the `OTPTextEditController` as a controller for your `TextField`.
 
 `OTPTextEditController.startListenUserConsent` - use [SMS User Consent API](https://developers.google.com/identity/sms-retriever/user-consent/overview), and custom strategies.
 `OTPTextEditController.startListenRetriever` - use [SMS Retriever API](https://developers.google.com/identity/sms-retriever/overview), and custom strategies.
@@ -144,8 +144,7 @@ void initState() {
 
 ## Send new code
 
-To get new code you can pass callback onTimeout Exception to detect and process this situation.
-
+To get new code when a timeout exception occurs, you can pass a callback function to the `onTimeOutException` parameter and start listen for a new code.
 
 ```dart
 controller = OTPTextEditController(
