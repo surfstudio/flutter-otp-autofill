@@ -16,7 +16,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:otp_autofill/otp_autofill.dart';
-import 'package:otp_autofill/src/utill/platform_wrapper.dart';
+import 'package:otp_autofill/src/util/platform_wrapper.dart';
 
 void main() {
   late OTPInteractor otpInteractor;
@@ -127,8 +127,7 @@ void main() {
 
       await otpInteractor.stopListenForCode();
 
-      verify(() => methodChannel.invokeMethod<Object>('stopListenForCode'))
-          .called(1);
+      verify(() => methodChannel.invokeMethod<Object>('stopListenForCode')).called(1);
     },
   );
 

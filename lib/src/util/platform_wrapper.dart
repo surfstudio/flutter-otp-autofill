@@ -1,6 +1,6 @@
 import 'dart:io';
 
-/// Wrapper for Platform io.
+/// This class provides a wrapper for interacting with the Platform io library.
 class PlatformWrapper {
   bool get isAndroid => Platform.isAndroid;
 }

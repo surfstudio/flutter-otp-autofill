@@ -14,8 +14,8 @@
 
 typedef ExtractStringCallback = String Function(String?);
 
-/// Strategy interface, another variant of code input
-/// e.g. from push notification or for testing.
+/// Strategy interface for handling different variants of code input.
+/// This interface is used for scenarios such as code input from push notifications or for testing purposes.
 // ignore: one_member_abstracts
 abstract class OTPStrategy {
   Future<String> listenForCode();

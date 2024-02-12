@@ -14,7 +14,7 @@
 
 import 'package:flutter/services.dart';
 import 'package:otp_autofill/src/base/exceptions.dart';
-import 'package:otp_autofill/src/utill/platform_wrapper.dart';
+import 'package:otp_autofill/src/util/platform_wrapper.dart';
 
 typedef StringCallback = void Function(String);
 
@@ -32,12 +32,13 @@ const getAppSignatureMethod = 'getAppSignature';
 const senderTelephoneNumber = 'senderTelephoneNumber';
 const _defaultChannel = MethodChannel(channelName);
 
-/// Interact with native to get OTP code and telephone hint.
+/// This class provides methods to interact with the native platform in order
+/// to retrieve the OTP code and telephone hint.
 class OTPInteractor {
   final MethodChannel _channel;
   final PlatformWrapper _platform;
 
-  /// Show user telephone picker and get chosen number.
+  /// Display a telephone picker and retrieve the chosen telephone number.
   Future<String?> get hint {
     if (_platform.isAndroid) {
       return _channel.invokeMethod<String>(getTelephoneHint);
@@ -53,7 +54,7 @@ class OTPInteractor {
         _channel = channel,
         _platform = platform ?? PlatformWrapper();
 
-  /// Get app signature, that used in Retriever API.
+  /// Get the app signature that is used in the Retriever API.
   Future<String?> getAppSignature() async {
     if (_platform.isAndroid) {
       return _channel.invokeMethod<String>(getAppSignatureMethod);
@@ -62,12 +63,15 @@ class OTPInteractor {
     }
   }
 
-  /// Broadcast receiver stop listen for OTP code, use in dispose.
+  /// Stops listening for OTP codes.
+  ///
+  /// This method should be called in the `dispose` method of the widget
+  /// or when you no longer need to listen for OTP codes.
   Future<Object?> stopListenForCode() {
     return _channel.invokeMethod<Object>(stopListenForCodeMethod);
   }
 
-  /// Broadcast receiver start listen for OTP code with User Consent API.
+  /// The broadcast receiver starts listening for OTP codes using the User Consent API.
   Future<String?> startListenUserConsent([String? senderPhone]) async {
     if (_platform.isAndroid) {
       return _channel.invokeMethod<String>(
@@ -81,7 +85,7 @@ class OTPInteractor {
     }
   }
 
-  /// Broadcast receiver start listen for OTP code with Retriever API.
+  /// The broadcast receiver starts listening for OTP codes using the Retriever API.
   Future<String?> startListenRetriever() async {
     if (_platform.isAndroid) {
       return _channel.invokeMethod<String>(startListenRetrieverMethod);
