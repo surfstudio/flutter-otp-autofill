@@ -50,10 +50,12 @@ void main() {
     when(() => platformWrapper.isAndroid).thenReturn(true);
 
     onTimeOutException = MockOnTimeoutException();
-    when(() => onTimeOutException.call()).thenAnswer((invocation) => Future<void>.value());
+    when(() => onTimeOutException.call())
+        .thenAnswer((invocation) => Future<void>.value());
 
     onException = MockOnException();
-    when(() => onException.call(any())).thenAnswer((invocation) => Future<void>.value());
+    when(() => onException.call(any()))
+        .thenAnswer((invocation) => Future<void>.value());
 
     controller = OTPTextEditController(
       otpInteractor: otpInteractor,
@@ -168,9 +170,11 @@ void main() {
         'The method startListenUserConsent on otpInteractor must be called',
         () async {
           when(() => otpInteractor.startListenUserConsent(senderNumber))
-              .thenAnswer((invocation) => Future.value('Your code is $codeFromOTPInteractor'));
+              .thenAnswer((invocation) =>
+                  Future.value('Your code is $codeFromOTPInteractor'));
 
-          when(() => otpInteractor.stopListenForCode()).thenAnswer((invocation) => Future.value());
+          when(() => otpInteractor.stopListenForCode())
+              .thenAnswer((invocation) => Future.value());
 
           await controller.startListenUserConsent(
             (code) {
@@ -181,7 +185,8 @@ void main() {
             senderNumber: senderNumber,
           );
 
-          verify(() => otpInteractor.startListenUserConsent(senderNumber)).called(1);
+          verify(() => otpInteractor.startListenUserConsent(senderNumber))
+              .called(1);
         },
       );
 
@@ -189,9 +194,11 @@ void main() {
         'If otpInteractor faster then other sends a code, the controller.text must be equal to this code',
         () async {
           when(() => otpInteractor.startListenUserConsent(senderNumber))
-              .thenAnswer((invocation) => Future.value('Your code is $codeFromOTPInteractor'));
+              .thenAnswer((invocation) =>
+                  Future.value('Your code is $codeFromOTPInteractor'));
 
-          when(() => otpInteractor.stopListenForCode()).thenAnswer((invocation) => Future.value());
+          when(() => otpInteractor.stopListenForCode())
+              .thenAnswer((invocation) => Future.value());
 
           unawaited(
             controller.startListenUserConsent(
@@ -208,7 +215,8 @@ void main() {
 
           await _futureDelayed();
 
-          verify(() => otpInteractor.startListenUserConsent(senderNumber)).called(1);
+          verify(() => otpInteractor.startListenUserConsent(senderNumber))
+              .called(1);
 
           expect(controller.text, equals(codeFromOTPInteractor));
         },
@@ -217,14 +225,16 @@ void main() {
       test(
         'If strategy faster then startListenUserConsent, should use code from strategy',
         () async {
-          when(() => otpInteractor.startListenUserConsent(senderNumber)).thenAnswer(
+          when(() => otpInteractor.startListenUserConsent(senderNumber))
+              .thenAnswer(
             (invocation) => Future.delayed(
               const Duration(milliseconds: 20),
               () => codeFromOTPInteractor,
             ),
           );
 
-          when(() => otpInteractor.stopListenForCode()).thenAnswer((invocation) => Future.value());
+          when(() => otpInteractor.stopListenForCode())
+              .thenAnswer((invocation) => Future.value());
 
           unawaited(
             controller.startListenUserConsent(
@@ -253,14 +263,16 @@ void main() {
       test(
         'Should use code from fastest source',
         () async {
-          when(() => otpInteractor.startListenUserConsent(senderNumber)).thenAnswer(
+          when(() => otpInteractor.startListenUserConsent(senderNumber))
+              .thenAnswer(
             (invocation) => Future.delayed(
               const Duration(milliseconds: 20),
               () => codeFromOTPInteractor,
             ),
           );
 
-          when(() => otpInteractor.stopListenForCode()).thenAnswer((invocation) => Future.value());
+          when(() => otpInteractor.stopListenForCode())
+              .thenAnswer((invocation) => Future.value());
 
           unawaited(
             controller.startListenUserConsent(
@@ -302,7 +314,8 @@ void main() {
           when(() => otpInteractor.startListenUserConsent(any())).thenAnswer(
             (invocation) => Future.value(),
           );
-          when(() => otpInteractor.stopListenForCode()).thenAnswer((invocation) => Future.value());
+          when(() => otpInteractor.stopListenForCode())
+              .thenAnswer((invocation) => Future.value());
 
           await controller.startListenUserConsent(
             (code) {
@@ -326,7 +339,8 @@ void main() {
           when(() => platformWrapper.isAndroid).thenReturn(false);
           when(() => otpInteractor.startListenUserConsent(any()))
               .thenAnswer((invocation) => Future.value());
-          when(() => otpInteractor.stopListenForCode()).thenAnswer((invocation) => Future.value());
+          when(() => otpInteractor.stopListenForCode())
+              .thenAnswer((invocation) => Future.value());
 
           await controller.startListenUserConsent(
             (code) {
@@ -350,7 +364,8 @@ void main() {
           when(() => platformWrapper.isAndroid).thenReturn(false);
           when(() => otpInteractor.startListenUserConsent(any()))
               .thenAnswer((invocation) => Future.value());
-          when(() => otpInteractor.stopListenForCode()).thenAnswer((invocation) => Future.value());
+          when(() => otpInteractor.stopListenForCode())
+              .thenAnswer((invocation) => Future.value());
 
           expect(
             () async => controller.startListenUserConsent(
@@ -380,7 +395,8 @@ void main() {
             (invocation) => Future.value('Your code is $codeFromOTPInteractor'),
           );
 
-          when(() => otpInteractor.stopListenForCode()).thenAnswer((invocation) => Future.value());
+          when(() => otpInteractor.stopListenForCode())
+              .thenAnswer((invocation) => Future.value());
 
           await controller.startListenRetriever(
             (code) {
@@ -397,7 +413,8 @@ void main() {
       test(
         'If otpInteractor faster then other sends a code, the controller.text must be equal to this code',
         () async {
-          when(() => otpInteractor.stopListenForCode()).thenAnswer((invocation) => Future.value());
+          when(() => otpInteractor.stopListenForCode())
+              .thenAnswer((invocation) => Future.value());
 
           when(() => otpInteractor.startListenRetriever())
               .thenAnswer((invocation) => Future.value(codeFromOTPInteractor));
@@ -434,7 +451,8 @@ void main() {
             ),
           );
 
-          when(() => otpInteractor.stopListenForCode()).thenAnswer((invocation) => Future.value());
+          when(() => otpInteractor.stopListenForCode())
+              .thenAnswer((invocation) => Future.value());
 
           unawaited(
             controller.startListenRetriever(
@@ -469,7 +487,8 @@ void main() {
             ),
           );
 
-          when(() => otpInteractor.stopListenForCode()).thenAnswer((invocation) => Future.value());
+          when(() => otpInteractor.stopListenForCode())
+              .thenAnswer((invocation) => Future.value());
 
           unawaited(
             controller.startListenRetriever(
@@ -509,7 +528,8 @@ void main() {
           when(() => platformWrapper.isAndroid).thenReturn(false);
           when(() => otpInteractor.startListenRetriever())
               .thenAnswer((invocation) => Future.value());
-          when(() => otpInteractor.stopListenForCode()).thenAnswer((invocation) => Future.value());
+          when(() => otpInteractor.stopListenForCode())
+              .thenAnswer((invocation) => Future.value());
 
           await controller.startListenRetriever(
             (code) {
@@ -533,7 +553,8 @@ void main() {
           when(() => platformWrapper.isAndroid).thenReturn(false);
           when(() => otpInteractor.startListenRetriever())
               .thenAnswer((invocation) => Future.value());
-          when(() => otpInteractor.stopListenForCode()).thenAnswer((invocation) => Future.value());
+          when(() => otpInteractor.stopListenForCode())
+              .thenAnswer((invocation) => Future.value());
 
           await controller.startListenRetriever(
             (code) {
@@ -557,7 +578,8 @@ void main() {
           when(() => platformWrapper.isAndroid).thenReturn(false);
           when(() => otpInteractor.startListenRetriever())
               .thenAnswer((invocation) => Future.value());
-          when(() => otpInteractor.stopListenForCode()).thenAnswer((invocation) => Future.value());
+          when(() => otpInteractor.stopListenForCode())
+              .thenAnswer((invocation) => Future.value());
 
           expect(
             () async => controller.startListenRetriever(
@@ -580,7 +602,8 @@ void main() {
   test(
     'Call stopListen method on OTPTextEditController should call OTPInteractor.stopListenForCode',
     () async {
-      when(() => otpInteractor.stopListenForCode()).thenAnswer((invocation) => Future.value());
+      when(() => otpInteractor.stopListenForCode())
+          .thenAnswer((invocation) => Future.value());
 
       await controller.stopListen();
 

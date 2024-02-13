@@ -127,7 +127,8 @@ void main() {
 
       await otpInteractor.stopListenForCode();
 
-      verify(() => methodChannel.invokeMethod<Object>('stopListenForCode')).called(1);
+      verify(() => methodChannel.invokeMethod<Object>('stopListenForCode'))
+          .called(1);
     },
   );
 
