@@ -31,7 +31,6 @@
 .pub-cache/
 .pub/
 build/
-.fvm/flutter_sdk
 
 # Android related
 **/android/**/gradle-wrapper.jar
@@ -77,3 +76,6 @@ coverage/
 !**/ios/**/default.mode2v3
 !**/ios/**/default.pbxuser
 !**/ios/**/default.perspectivev3
+
+# FVM
+.fvm/
