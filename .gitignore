@@ -32,6 +32,9 @@
 .pub/
 build/
 
+# FVM
+.fvm/
+
 # Android related
 **/android/**/gradle-wrapper.jar
 **/android/.gradle
@@ -76,6 +79,3 @@ coverage/
 !**/ios/**/default.mode2v3
 !**/ios/**/default.pbxuser
 !**/ios/**/default.perspectivev3
-
-# FVM
-.fvm/
