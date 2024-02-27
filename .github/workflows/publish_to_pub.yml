@@ -32,7 +32,7 @@ jobs:
     with:
       flutter-version: ${{ needs.get_fvm_version.outputs.flutter_version }}
     secrets:
-      CODECOV_TOKEN: ${{ secrets.SURFGEAR_CODECOV_TOKEN }}
+      CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
   package-publishing:
     needs: [analysis, testing, get_fvm_version]
