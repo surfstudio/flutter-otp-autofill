@@ -7,17 +7,17 @@
 [![Pub popularity](https://badgen.net/pub/popularity/otp_autofill)](https://pub.dev/packages/otp_autofill/score)
 ![Flutter Platform](https://badgen.net/pub/flutter-platform/otp_autofill)
 
-This package is part of the [SurfGear](https://github.com/surfstudio/SurfGear) toolkit made by [Surf](https://surf.ru).
+This package is a part of the [SurfGear](https://github.com/surfstudio/SurfGear) toolkit made by [Surf](https://surf.ru).
 
 [![OTP autofill](https://i.ibb.co/dG8zd7c/OTP-autofill.png)](https://github.com/surfstudio/SurfGear)
 
 ## Description
 
-This plugin uses [SMS User Consent API](https://developers.google.com/identity/sms-retriever/user-consent/overview) and [SMS Retriever API](https://developers.google.com/identity/sms-retriever/overview) on Android.
+This plugin uses the [SMS User Consent API](https://developers.google.com/identity/sms-retriever/user-consent/overview) and [SMS Retriever API](https://developers.google.com/identity/sms-retriever/overview) on Android.
 
-You could use autofill from another input by using OTPStrategy. (e.g. from push-notification).
+You could use autofill from another input by using the OTPStrategy (e.g. from push-notification).
 
-For testing you could create `TestStrategy`.
+For testing you could create a `TestStrategy`.
 
 ## iOS
 
@@ -36,40 +36,44 @@ The iOS platform is capable of receiving OTP from any phone number, not just a s
 ## Android
 
 `OTPInteractor.hint` - displays a system dialog that allows the user to select from their saved phone numbers (recommendation from Google).
-`OTPInteractor.getAppSignature` - create hash-code of your application, that is used in [SMS Retriever API](https://developers.google.com/identity/sms-retriever/overview).
-`OTPInteractor.startListenUserConsent` - BroadcastReceiver starts listening for code from Google Services for 5 minutes. Above 5 minutes, a timeout exception is raised. Using [SMS User Consent API](https://developers.google.com/identity/sms-retriever/user-consent/overview).
-`OTPInteractor.startListenRetriever` - BroadcastReceiver starts listening for code from Google Services for 5 minutes. Above 5 minutes, a timeout exception is raised. Using [SMS Retriever API](https://developers.google.com/identity/sms-retriever/overview).
+
+`OTPInteractor.getAppSignature` - creates the hash code of your application, which is used in the [SMS Retriever API](https://developers.google.com/identity/sms-retriever/overview).
+
+`OTPInteractor.startListenUserConsent` - the broadcast receiver that starts listening for OTP codes using the [SMS User Consent API](https://developers.google.com/identity/sms-retriever/user-consent/overview). It listens for a duration of 5 minutes, after which a timeout exception occurs.
+
+`OTPInteractor.startListenRetriever` - the broadcast receiver that starts listening for OTP codes using the [SMS Retriever API](https://developers.google.com/identity/sms-retriever/overview). It listens for a duration of 5 minutes, after which a timeout exception occurs.
+
 `OTPInteractor.stopListenForCode` - used in dispose.
 
-The plugin is designed to receive the entire text of an SMS message and requires a parser to extract relevant information from the message.
+The plugin is designed to receive the full text of an SMS message and requires a parser to extract the relevant information from the message.
 
-If you use [SMS User Consent API](https://developers.google.com/identity/sms-retriever/user-consent/overview), the system will prompt the user for permission to access and read incoming messages.
+If you use the [SMS User Consent API](https://developers.google.com/identity/sms-retriever/user-consent/overview), the system will prompt the user for permission to access and read incoming messages.
 
-### Rules for sms. SMS User Consent API
+### Rules for SMS when using [SMS User Consent API](https://developers.google.com/identity/sms-retriever/user-consent/overview)
 
-1. The message should have a 4-10 character alphanumeric string with at least one number.
-2. The message was sent by a phone number that's not in the user's contacts.
-3. If the sender's phone number is specified, the message must be sent from that number.
+1. The message should contain an alphanumeric string of 4 to 10 characters, with at least one digit.
+2. The message was sent from a phone number that is not in the user's contacts.
+3. If the sender's phone number is specified, the message must originate from that number.
 
-### Rules for sms. SMS Retriever API
+### Rules for SMS when using [SMS Retriever API](https://developers.google.com/identity/sms-retriever/overview)
 
-1. It should not exceed 140 bytes in length.
-2. It should contain a one-time code that the client sends back to your server to complete the verification flow.
-3. It should include an 11-character hash string that identifies your app ([documentation for server](https://developers.google.com/identity/sms-retriever/verify#computing_your_apps_hash_string), for testing you can get it from `OTPInteractor.getAppSignature`).
+1. The length should not exceed 140 bytes.
+2. It should contain a one-time code that the client sends back to your server to complete the verification process.
+3. It should include an 11-character hash string that identifies your app (refer to the [documentation for server](https://developers.google.com/identity/sms-retriever/verify#computing_your_apps_hash_string) for more details). For testing, you can obtain it from `OTPInteractor.getAppSignature`.
 
 ### Android Testing
 
-The `OTPInteractor.startListenForCode` method allows the application to start receiving verification codes from a specific phone number specified by the `senderPhone` argument.
+The `OTPInteractor.startListenForCode` method allows the application to start receiving verification codes from a specific phone number, specified by the `senderPhone` argument.
 
 ## Usage
 
-You could use `OTPInteractor` to interact with OTP.
+You should use `OTPInteractor` to interact with OTP.
 
-To simplify implementation, you can use the `OTPTextEditController` as a controller for your `TextField`.
+To simplify implementation, consider using the `OTPTextEditController` as a controller for your `TextField`.
 
-`OTPTextEditController.startListenUserConsent` - use [SMS User Consent API](https://developers.google.com/identity/sms-retriever/user-consent/overview), and custom strategies.
-`OTPTextEditController.startListenRetriever` - use [SMS Retriever API](https://developers.google.com/identity/sms-retriever/overview), and custom strategies.
-`OTPTextEditController.startListenOnlyStrategies` - listen only custom strategies.
+`OTPTextEditController.startListenUserConsent` - uses the [SMS User Consent API](https://developers.google.com/identity/sms-retriever/user-consent/overview) and listens to user strategies.
+`OTPTextEditController.startListenRetriever` - uses the [SMS Retriever API](https://developers.google.com/identity/sms-retriever/overview) and listens to user strategies.
+`OTPTextEditController.startListenOnlyStrategies` - only listens to user strategies.
 `OTPTextEditController.stopListen` - used in dispose.
 
 ## Installation
@@ -85,7 +89,7 @@ dependencies:
 
 ### Android Installation
 
-Set `minSdkVersion` at least to 19 in `<project root>/project/android/app/build.gradle`.
+Set `minSdkVersion` at least to 19 in `<project root>/android/app/build.gradle`.
 
 ``` gradle
 android {
@@ -101,7 +105,7 @@ android {
 
 ## Example
 
-1. Create simple strategy
+1. Create a simple strategy
 
 ```dart
 class SampleStrategy extends OTPStrategy {
@@ -115,7 +119,7 @@ class SampleStrategy extends OTPStrategy {
 }
 ```
 
-2. Initialize listener and set
+2. Initialize and install the listener
 
 ```dart
 late OTPTextEditController controller;
@@ -144,7 +148,7 @@ void initState() {
 
 ## Send new code
 
-To get new code when a timeout exception occurs, you can pass a callback function to the `onTimeOutException` parameter and start listen for a new code.
+To receive a new code when a timeout exception occurs, you can pass a callback function to the `onTimeOutException` parameter and start listen for a new code.
 
 ```dart
 controller = OTPTextEditController(
@@ -176,21 +180,21 @@ controller = OTPTextEditController(
 
 ## Changelog
 
-All notable changes to this project will be documented in [this file](./CHANGELOG.md).
+All significant changes to this project will be documented in [this file](./CHANGELOG.md).
 
 ## Issues
 
-To report your issues, submit them directly in the [Issues](https://github.com/surfstudio/flutter-otp-autofill/issues) section.
+To report any issues, submit them directly in the [Issues](https://github.com/surfstudio/flutter-otp-autofill/issues) section.
 
 ## Contribute
 
-If you would like to contribute to the package (e.g. by improving the documentation, fixing a bug or adding a cool new feature), please read our [contribution guide](./CONTRIBUTING.md) first and send us your pull request.
+If you wish to contribute to the package (for instance, by enhancing the documentation, fixing a bug, or introducing a new feature), please review our [contribution guide](./CONTRIBUTING.md) first and then submit your pull request.
 
 Your PRs are always welcome.
 
 ## How to reach us
 
-Please feel free to ask any questions about this package. Join our community chat on Telegram. We speak English and Russian.
+Please don't hesitate to ask any questions about this package. Join our community chat on Telegram. We communicate in both English and Russian.
 
 [![Telegram](https://img.shields.io/badge/chat-on%20Telegram-blue.svg)](https://t.me/SurfGear)
 
