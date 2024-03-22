@@ -35,10 +35,10 @@ The iOS platform is capable of receiving OTP from any phone number, not just a s
 
 ## Android
 
-`OTPInteractor.hint` - displays a system dialog that allows the user to select from their saved phone numbers (recommendation from Google).
-`OTPInteractor.getAppSignature` - creates the hash code of your application, which is used in the [SMS Retriever API](https://developers.google.com/identity/sms-retriever/overview).
-`OTPInteractor.startListenUserConsent` - the broadcast receiver that starts listening for OTP codes using the [SMS User Consent API](https://developers.google.com/identity/sms-retriever/user-consent/overview). It listens for a duration of 5 minutes, after which a timeout exception occurs.
-`OTPInteractor.startListenRetriever` - the broadcast receiver that starts listening for OTP codes using the [SMS Retriever API](https://developers.google.com/identity/sms-retriever/overview). It listens for a duration of 5 minutes, after which a timeout exception occurs.
+`OTPInteractor.hint` - displays a system dialog that allows the user to select from their saved phone numbers (recommendation from Google).  
+`OTPInteractor.getAppSignature` - creates the hash code of your application, which is used in the [SMS Retriever API](https://developers.google.com/identity/sms-retriever/overview).  
+`OTPInteractor.startListenUserConsent` - the broadcast receiver that starts listening for OTP codes using the [SMS User Consent API](https://developers.google.com/identity/sms-retriever/user-consent/overview). It listens for a duration of 5 minutes, after which a timeout exception occurs.  
+`OTPInteractor.startListenRetriever` - the broadcast receiver that starts listening for OTP codes using the [SMS Retriever API](https://developers.google.com/identity/sms-retriever/overview). It listens for a duration of 5 minutes, after which a timeout exception occurs.  
 `OTPInteractor.stopListenForCode` - used in dispose.
 
 The plugin is designed to receive the full text of an SMS message and requires a parser to extract the relevant information from the message.
