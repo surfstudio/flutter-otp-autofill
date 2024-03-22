@@ -115,7 +115,7 @@ class SampleStrategy extends OTPStrategy {
 }
 ```
 
-2. Initialize and install the listener
+2. Initialize and set the listener
 
 ```dart
 late OTPTextEditController controller;
