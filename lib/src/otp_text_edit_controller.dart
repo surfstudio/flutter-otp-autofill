@@ -18,25 +18,40 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:otp_autofill/src/base/strategy.dart';
 import 'package:otp_autofill/src/otp_interactor.dart';
-import 'package:otp_autofill/src/utill/platform_wrapper.dart';
+import 'package:otp_autofill/src/util/platform_wrapper.dart';
 
 final _defaultOTPInteractor = OTPInteractor();
 
-/// Custom controller for text views, IOS autofill is built in flutter.
+/// Custom [TextEditingController] for text views, IOS autofill is built in flutter.
+///
+/// This controller is responsible for managing the OTP code input, including
+/// handling the code length, receiving the code, handling timeout exceptions,
+/// and providing an error handler. It also has the option to automatically stop
+/// listening for input after receiving the complete code.
 class OTPTextEditController extends TextEditingController {
-  /// OTP code length - trigger for callback.
+  /// The length of the OTP code.
+  ///
+  /// When the user enters an OTP code with the specified length,
+  /// the [onCodeReceive] callback will be triggered.
   final int codeLength;
 
-  /// [OTPTextEditController]'s receive OTP code callback.
+  /// The callback is triggered when the OTP code is received by the [OTPTextEditController].
+  ///
+  /// This callback can be used to perform actions when the code is received,
+  /// such as validating the code or submitting a form.
   final StringCallback? onCodeReceive;
 
-  /// Receiver gets TimeoutError after 5 minutes without sms.
+  /// A callback function that is called when a time-out exception occurs.
+  ///
+  /// If no SMS is received within 5 minutes, a TimeoutError will be triggered.
   final VoidCallback? onTimeOutException;
 
-  /// Error handler.
+  /// This callback function is used to handle any exceptions that occur during the OTP text editing process.
+  /// It takes an [Exception] as a parameter and can be used to perform custom error handling logic.
   final Function(Exception error)? errorHandler;
 
-  /// Stop listening after receiving or error an OTP code.
+  /// Determines whether the controller should automatically stop listening
+  /// for OTP input after receiving or error an OTP code.
   final bool autoStop;
 
   /// Interaction with OTP.
@@ -60,9 +75,14 @@ class OTPTextEditController extends TextEditingController {
     addListener(checkForComplete);
   }
 
-  /// Start listen for OTP code with User Consent API
-  /// sms by default
-  /// could be added another input as [OTPStrategy].
+  /// Starts listening for the OTP code with the User Consent API.
+  /// By default, it listens for SMS messages.
+  /// Additional input strategies can be added using [OTPStrategy].
+  ///
+  /// Parameters:
+  /// - [codeExtractor] a callback function that extracts the OTP code from the received message.
+  /// - [strategies] additional OTP strategies to listen for.
+  /// - [senderNumber] the sender number to filter the OTP messages.
   Future<void> startListenUserConsent(
     ExtractStringCallback codeExtractor, {
     List<OTPStrategy>? strategies,
@@ -100,9 +120,11 @@ class OTPTextEditController extends TextEditingController {
     );
   }
 
-  /// Start listen for OTP code with Retriever API
-  /// sms by default
-  /// could be added another input as [OTPStrategy].
+  /// Starts listening for OTP code using the Retriever API.
+  ///
+  /// Parameters:
+  /// - [codeExtractor] callback function that extracts the OTP code from the received message.
+  /// - [additionalStrategies] additional OTP strategies to listen for.
   Future<void> startListenRetriever(
     ExtractStringCallback codeExtractor, {
     List<OTPStrategy>? additionalStrategies,
@@ -139,8 +161,12 @@ class OTPTextEditController extends TextEditingController {
     );
   }
 
-  /// Get OTP code from another input
-  /// don't register any BroadcastReceivers.
+  /// Starts listening for the OTP code using the specified strategies and extracts the code when it is received.
+  /// The extracted code is then set as the text of the controller.
+  ///
+  /// Parameters:
+  /// - [strategies] additional OTP strategies to listen for code.
+  /// - [codeExtractor] callback function that extracts the OTP code from the received message.
   void startListenOnlyStrategies(
     List<OTPStrategy>? strategies,
     ExtractStringCallback codeExtractor,
@@ -153,12 +179,16 @@ class OTPTextEditController extends TextEditingController {
     });
   }
 
-  /// Broadcast receiver stop listen for OTP code, use in dispose.
+  /// Broadcast receiver stops listening for OTP code.
+  ///
+  /// This method should be called in the `dispose` method of the widget
+  /// or when you no longer need to listen for OTP codes.
   Future<Object?> stopListen() {
     return otpInteractor.stopListenForCode();
   }
 
-  /// Call onComplete callback if code entered.
+  /// This method checks if the length of the entered text is equal to the code length.
+  /// If it is, the [onCodeReceive] callback is called with the entered text as a parameter.
   void checkForComplete() {
     if (text.length == codeLength) onCodeReceive?.call(text);
   }
