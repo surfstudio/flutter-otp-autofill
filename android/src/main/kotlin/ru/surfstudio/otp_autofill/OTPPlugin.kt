@@ -39,7 +39,8 @@ const val getAppSignatureMethod: String = "getAppSignature"
 const val senderTelephoneNumber: String = "senderTelephoneNumber"
 
 /** OtpTextEditControllerPlugin */
-class OTPPlugin : FlutterPlugin, MethodCallHandler, PluginRegistry.ActivityResultListener, ActivityAware {
+class OTPPlugin : FlutterPlugin, MethodCallHandler, PluginRegistry.ActivityResultListener,
+    ActivityAware {
 
     private lateinit var channel: MethodChannel
 
@@ -73,22 +74,27 @@ class OTPPlugin : FlutterPlugin, MethodCallHandler, PluginRegistry.ActivityResul
             startListenRetriever -> {
                 listenRetriever(result)
             }
+
             startListenUserConsent -> {
                 listenUserConsent(call, result)
             }
+
             getTelephoneHint -> {
                 showNumberHint(result)
             }
+
             stopListenForCode -> {
                 unRegisterBroadcastReceivers()
                 result.success(true)
             }
+
             getAppSignatureMethod -> {
                 if (activity != null) {
                     val signature = AppSignatureHelper(this.activity!!).getAppSignatures()[0]
                     result.success(signature)
                 } else result.success(null)
             }
+
             else -> result.notImplemented()
         }
     }
@@ -96,7 +102,7 @@ class OTPPlugin : FlutterPlugin, MethodCallHandler, PluginRegistry.ActivityResul
     private fun showNumberHint(result: Result) {
         lastResult = result
 
-        if(activity == null) return
+        if (activity == null) return
 
         // if activity is not null will build 'show hint' intent
         // on success will start showing hint
@@ -106,8 +112,10 @@ class OTPPlugin : FlutterPlugin, MethodCallHandler, PluginRegistry.ActivityResul
                 res.intentSender
                 val request = Builder(res).build()
 
-                activity!!.startIntentSenderForResult(request.intentSender, credentialPickerRequest,
-                    null, 0, 0, 0)
+                activity!!.startIntentSenderForResult(
+                    request.intentSender, credentialPickerRequest,
+                    null, 0, 0, 0
+                )
             }
     }
 
@@ -130,16 +138,18 @@ class OTPPlugin : FlutterPlugin, MethodCallHandler, PluginRegistry.ActivityResul
                 } else {
                     // Consent denied. User can type OTC manually.
                 }
+
             credentialPickerRequest -> if (resultCode == Activity.RESULT_OK && data != null) {
                 // Check if the result is for credential picker
                 if (data.hasExtra(SmsRetriever.EXTRA_SMS_MESSAGE)) {
                     // This is a result from the SMS consent picker
                     val phoneNumber =
-                            Identity.getSignInClient(context!!).getPhoneNumberFromIntent(data)
+                        Identity.getSignInClient(context!!).getPhoneNumberFromIntent(data)
                     lastResult?.success(phoneNumber)
                     lastResult = null
                 } else {
-                    // This is not a result from the SMS consent picker, ignore it
+                    lastResult?.error("403", "User denied consent", null)
+                    lastResult = null
                 }
             }
         }
@@ -174,16 +184,22 @@ class OTPPlugin : FlutterPlugin, MethodCallHandler, PluginRegistry.ActivityResul
 
     private fun registerSmsUserConsentBroadcastReceiver() {
         smsUserConsentBroadcastReceiver = SmsUserConsentReceiver().also {
-            it.smsBroadcastReceiverListener = object : SmsUserConsentReceiver.SmsUserConsentBroadcastReceiverListener {
-                override fun onSuccess(intent: Intent?) {
-                    intent?.let { context -> activity?.startActivityForResult(context, smsConsentRequest) }
-                }
+            it.smsBroadcastReceiverListener =
+                object : SmsUserConsentReceiver.SmsUserConsentBroadcastReceiverListener {
+                    override fun onSuccess(intent: Intent?) {
+                        intent?.let { context ->
+                            activity?.startActivityForResult(
+                                context,
+                                smsConsentRequest
+                            )
+                        }
+                    }
 
-                override fun onFailure() {
-                    lastResult?.error("408", "Timeout exception", null)
-                    lastResult = null
+                    override fun onFailure() {
+                        lastResult?.error("408", "Timeout exception", null)
+                        lastResult = null
+                    }
                 }
-            }
         }
 
         val intentFilter = IntentFilter(SmsRetriever.SMS_RETRIEVED_ACTION)
@@ -208,19 +224,20 @@ class OTPPlugin : FlutterPlugin, MethodCallHandler, PluginRegistry.ActivityResul
 
     private fun registerSmsRetrieverBroadcastReceiver() {
         smsRetrieverBroadcastReceiver = SmsRetrieverReceiver().also {
-            it.smsBroadcastReceiverListener = object : SmsRetrieverReceiver.SmsRetrieverBroadcastReceiverListener {
-                override fun onSuccess(sms: String?) {
-                    sms?.let { it ->
-                        lastResult?.success(it)
+            it.smsBroadcastReceiverListener =
+                object : SmsRetrieverReceiver.SmsRetrieverBroadcastReceiverListener {
+                    override fun onSuccess(sms: String?) {
+                        sms?.let { it ->
+                            lastResult?.success(it)
+                            lastResult = null
+                        }
+                    }
+
+                    override fun onFailure() {
+                        lastResult?.error("408", "Timeout exception", null)
                         lastResult = null
                     }
                 }
-
-                override fun onFailure() {
-                    lastResult?.error("408", "Timeout exception", null)
-                    lastResult = null
-                }
-            }
         }
 
         val intentFilter = IntentFilter(SmsRetriever.SMS_RETRIEVED_ACTION)
