@@ -14,7 +14,7 @@
 
 import 'dart:io';
 
-/// Plugin doesn't support platform.
+/// This exception is thrown when the plugin does not support the current platform.
 class UnsupportedPlatform implements Exception {
   @override
   String toString() {

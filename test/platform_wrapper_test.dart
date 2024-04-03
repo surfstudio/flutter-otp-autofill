@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:otp_autofill/src/utill/platform_wrapper.dart';
+import 'package:otp_autofill/src/util/platform_wrapper.dart';
 
 void main() {
   late PlatformWrapper platformWrapper;
