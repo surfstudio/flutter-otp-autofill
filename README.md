@@ -11,7 +11,7 @@ This package is a part of the [SurfGear](https://github.com/surfstudio/SurfGear)
 
 [![OTP autofill](https://i.ibb.co/dG8zd7c/OTP-autofill.png)](https://github.com/surfstudio/SurfGear)
 
-## Description
+## Overview
 
 This plugin uses the [SMS User Consent API](https://developers.google.com/identity/sms-retriever/user-consent/overview) and [SMS Retriever API](https://developers.google.com/identity/sms-retriever/overview) on Android.
 
@@ -21,7 +21,7 @@ For testing you could create a `TestStrategy`.
 
 ## iOS
 
-On iOS, the OTP autofill feature is integrated into the `TextField` component. 
+On iOS, the OTP autofill feature is integrated into the `TextField` component.
 The code received from an SMS is stored for a duration of 3 minutes.
 
 ### Rules for sms
@@ -35,11 +35,11 @@ The iOS platform is capable of receiving OTP from any phone number, not just a s
 
 ## Android
 
-`OTPInteractor.hint` - displays a system dialog that allows the user to select from their saved phone numbers (recommendation from Google).  
-`OTPInteractor.getAppSignature` - creates the hash code of your application, which is used in the [SMS Retriever API](https://developers.google.com/identity/sms-retriever/overview).  
-`OTPInteractor.startListenUserConsent` - the broadcast receiver that starts listening for OTP codes using the [SMS User Consent API](https://developers.google.com/identity/sms-retriever/user-consent/overview). It listens for a duration of 5 minutes, after which a timeout exception occurs.  
-`OTPInteractor.startListenRetriever` - the broadcast receiver that starts listening for OTP codes using the [SMS Retriever API](https://developers.google.com/identity/sms-retriever/overview). It listens for a duration of 5 minutes, after which a timeout exception occurs.  
-`OTPInteractor.stopListenForCode` - used in dispose.
+- `OTPInteractor.hint` - displays a system dialog that allows the user to select from their saved phone numbers (recommendation from Google).
+- `OTPInteractor.getAppSignature` - creates the hash code of your application, which is used in the [SMS Retriever API](https://developers.google.com/identity/sms-retriever/overview).
+- `OTPInteractor.startListenUserConsent` - the broadcast receiver that starts listening for OTP codes using the [SMS User Consent API](https://developers.google.com/identity/sms-retriever/user-consent/overview). It listens for a duration of 5 minutes, after which a timeout exception occurs.
+- `OTPInteractor.startListenRetriever` - the broadcast receiver that starts listening for OTP codes using the [SMS Retriever API](https://developers.google.com/identity/sms-retriever/overview). It listens for a duration of 5 minutes, after which a timeout exception occurs.
+- `OTPInteractor.stopListenForCode` - used in dispose.
 
 The plugin is designed to receive the full text of an SMS message and requires a parser to extract the relevant information from the message.
 
