@@ -23,9 +23,10 @@ jobs:
 
   build_android_example:
     needs: [analysis, get_flutter_version]
-    uses: surfstudio/flutter-ci-workflows/.github/workflows/build_android_example.yml@main
+    uses: surfstudio/flutter-ci-workflows/.github/workflows/build_android_example.yml@SNP-1124_update_java
     with:
       FLUTTER_VERSION: ${{ needs.get_flutter_version.outputs.FLUTTER_VERSION }}
+      JAVA_VERSION: 17
 
   build_ios_example:
     needs: [analysis, get_flutter_version]
