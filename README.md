@@ -1,5 +1,10 @@
 # OTP autofill
 
+[![Surf](./assets/logo_white.png#gh-dark-mode-only)](https://surf.dev#gh-dark-mode-only)
+[![Surf](./assets/logo_black.png#gh-light-mode-only)](https://surf.dev#gh-light-mode-only)
+
+Made by [Surf 🏄‍♂️🏄‍♂️🏄‍♂️](https://surf.dev/)
+
 [![Build Status](https://shields.io/github/actions/workflow/status/surfstudio/flutter-otp-autofill/main.yml?logo=github&logoColor=white)](https://github.com/surfstudio/flutter-otp-autofill)
 [![Coverage Status](https://img.shields.io/codecov/c/github/surfstudio/flutter-otp-autofill?logo=codecov&logoColor=white)](https://app.codecov.io/gh/surfstudio/flutter-otp-autofill)
 [![Pub Version](https://img.shields.io/pub/v/otp_autofill?logo=dart&logoColor=white)](https://pub.dev/packages/otp_autofill)
