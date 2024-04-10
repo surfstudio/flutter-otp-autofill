@@ -12,10 +12,6 @@ Made by [Surf 🏄‍♂️🏄‍♂️🏄‍♂️](https://surf.dev/)
 [![Pub popularity](https://badgen.net/pub/popularity/otp_autofill)](https://pub.dev/packages/otp_autofill/score)
 ![Flutter Platform](https://badgen.net/pub/flutter-platform/otp_autofill)
 
-This package is a part of the [SurfGear](https://github.com/surfstudio/SurfGear) toolkit made by [Surf](https://surf.ru).
-
-[![OTP autofill](https://i.ibb.co/dG8zd7c/OTP-autofill.png)](https://github.com/surfstudio/SurfGear)
-
 ## Overview
 
 This plugin uses the [SMS User Consent API](https://developers.google.com/identity/sms-retriever/user-consent/overview) and [SMS Retriever API](https://developers.google.com/identity/sms-retriever/overview) on Android.
