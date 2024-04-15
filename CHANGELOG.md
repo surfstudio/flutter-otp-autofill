@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.0.3
+
+* Rebranding.
+
 ## 3.0.2
 
 * Fix SmsRetrieverBroadcastReceiver on Android 14.
