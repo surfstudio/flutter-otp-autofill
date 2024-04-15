@@ -1,15 +1,16 @@
 # OTP autofill
 
-[![Build Status](https://shields.io/github/actions/workflow/status/surfstudio/flutter-otp-autofill/main.yml?logo=github&logoColor=white)](https://github.com/surfstudio/flutter-otp-autofill)
+<img src="https://raw.githubusercontent.com/surfstudio/flutter-open-source/main/assets/logo_white.png#gh-dark-mode-only" width="200">
+<img src="https://raw.githubusercontent.com/surfstudio/flutter-open-source/main/assets/logo_black.png#gh-light-mode-only" width="200">
+
+Made by [Surf 🏄‍♂️🏄‍♂️🏄‍♂️](https://surf.dev/)
+
+[![Build Status](https://shields.io/github/actions/workflow/status/surfstudio/flutter-otp-autofill/on_pull_request.yml?logo=github&logoColor=white)](https://github.com/surfstudio/flutter-otp-autofill)
 [![Coverage Status](https://img.shields.io/codecov/c/github/surfstudio/flutter-otp-autofill?logo=codecov&logoColor=white)](https://app.codecov.io/gh/surfstudio/flutter-otp-autofill)
 [![Pub Version](https://img.shields.io/pub/v/otp_autofill?logo=dart&logoColor=white)](https://pub.dev/packages/otp_autofill)
 [![Pub Likes](https://badgen.net/pub/likes/otp_autofill)](https://pub.dev/packages/otp_autofill)
 [![Pub popularity](https://badgen.net/pub/popularity/otp_autofill)](https://pub.dev/packages/otp_autofill/score)
 ![Flutter Platform](https://badgen.net/pub/flutter-platform/otp_autofill)
-
-This package is a part of the [SurfGear](https://github.com/surfstudio/SurfGear) toolkit made by [Surf](https://surf.ru).
-
-[![OTP autofill](https://i.ibb.co/dG8zd7c/OTP-autofill.png)](https://github.com/surfstudio/SurfGear)
 
 ## Overview
 
