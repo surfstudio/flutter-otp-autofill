@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.0.4
+
+* Correct logo position.
+
 ## 3.0.3
 
 * Rebranding.
