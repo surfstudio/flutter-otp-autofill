@@ -96,6 +96,8 @@ class OTPTextEditController extends TextEditingController {
       if (strategiesListen != null) ...strategiesListen,
     ];
 
+    if (list.isEmpty) return Future.value();
+
     return Stream.fromFutures(list).first.then(
       (value) {
         if (autoStop) {
@@ -134,10 +136,14 @@ class OTPTextEditController extends TextEditingController {
       (e) => e.listenForCode(),
     );
 
-    return Stream.fromFutures([
+    final list = [
       if (platform.isAndroid) smsListen,
       if (strategiesListen != null) ...strategiesListen,
-    ]).first.then(
+    ];
+
+    if (list.isEmpty) return Future.value();
+
+    return Stream.fromFutures(list).first.then(
       (value) {
         if (autoStop) {
           stopListen();
@@ -172,9 +178,14 @@ class OTPTextEditController extends TextEditingController {
     ExtractStringCallback codeExtractor,
   ) {
     final strategiesListen = strategies?.map((e) => e.listenForCode());
-    Stream.fromFutures([
+
+    final list = [
       if (strategiesListen != null) ...strategiesListen,
-    ]).first.then((value) {
+    ];
+
+    if (list.isEmpty) return;
+
+    Stream.fromFutures(list).first.then((value) {
       text = codeExtractor(value);
     });
   }
