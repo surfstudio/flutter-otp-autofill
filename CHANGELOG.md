@@ -1,5 +1,10 @@
 # Changelog
 
+## 4.0.0
+
+* Breaking: Upgrade Gradle version.
+* Breaking: Upgrade Kotlin version.
+
 ## 3.0.4
 
 * Correct logo position.
