@@ -4,6 +4,7 @@
 
 * Breaking: Upgrade Gradle version.
 * Breaking: Upgrade Kotlin version.
+* Breaking: Remove v1 embedding support.
 
 ## 3.0.4
 
