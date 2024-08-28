@@ -62,6 +62,18 @@ If you use the [SMS User Consent API](https://developers.google.com/identity/sms
 
 The `OTPInteractor.startListenForCode` method allows the application to start receiving verification codes from a specific phone number, specified by the `senderPhone` argument.
 
+You also can use Android Emulator to test the plugin. To do this, you need to send an SMS to the emulator with the following command:
+
+```bash
+adb emu sms send <senderPhone> <message>
+```
+E.g.:
+```bash
+adb emu sms send 900 "Your code is 12345. Do not share it with anyone."
+```
+
+Make sure `senderPhone` is the same as the one you specified in the `startListenForCode` method.
+
 ## Usage
 
 You should use `OTPInteractor` to interact with OTP.
