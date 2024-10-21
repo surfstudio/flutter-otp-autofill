@@ -1,5 +1,10 @@
 # Changelog
 
+## 4.1.0
+
+* Fix `com.google.android.gms.common.api.ApiException: 16`
+
+
 ## 4.0.0
 
 * Breaking: Upgrade Gradle version.
